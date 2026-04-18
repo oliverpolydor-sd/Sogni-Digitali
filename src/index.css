@@ -1,0 +1,729 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --color-brand-bg: #000000;
+  --color-brand-surface: #0a0a0a;
+  --color-brand-cyan: #00E5FF;
+  --color-brand-gold: #E9C349;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-brand-bg);
+  color: #F8FAFC;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Light Mode Overrides */
+html.light-mode body {
+  background-color: #fffaf0; /* Warm white */
+  color: #431407; /* Deep warm brown/slate */
+}
+html.light-mode .text-slate-50,
+html.light-mode .text-slate-200,
+html.light-mode .text-white {
+  color: #431407 !important;
+}
+html.light-mode .text-slate-300,
+html.light-mode .text-slate-400,
+html.light-mode .text-slate-500,
+html.light-mode .placeholder\:text-slate-500::placeholder {
+  color: #7c2d12 !important;
+}
+html.light-mode .bg-black\/80,
+html.light-mode .bg-black\/90,
+html.light-mode .bg-black\/95 {
+  background-color: rgba(255, 250, 240, 0.85) !important;
+}
+html.light-mode .bg-black\/60 {
+  background-color: rgba(255, 250, 240, 0.6) !important;
+}
+html.light-mode .bg-black\/40,
+html.light-mode .bg-black\/20 {
+  background-color: rgba(255, 250, 240, 0.4) !important;
+}
+html.light-mode .bg-black {
+  background-color: #ffffff !important;
+}
+html.light-mode .glass-panel {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border-color: rgba(234, 88, 12, 0.2) !important;
+  box-shadow: 0 8px 32px 0 rgba(234, 88, 12, 0.05) !important;
+}
+html.light-mode .border-white\/10,
+html.light-mode .border-white\/5 {
+  border-color: rgba(234, 88, 12, 0.2) !important;
+}
+html.light-mode .bg-white\/5 {
+  background-color: rgba(234, 88, 12, 0.05) !important;
+}
+html.light-mode .hover\:bg-white\/10:hover {
+  background-color: rgba(234, 88, 12, 0.1) !important;
+}
+
+/* Solar Mode Background */
+html.light-mode .space-bg {
+  background-color: #fffaf0;
+  background-image: none !important;
+}
+
+/* The Sun */
+html.light-mode .space-bg::after {
+  display: none;
+}
+
+html.light-mode .space-grid {
+  opacity: 0 !important;
+}
+
+html.light-mode .light-mode-sun {
+  opacity: 1 !important;
+}
+
+html.light-mode img[alt="Sogni Digitali Logo"] {
+  /* Inverts without destroying internal contrast (unlike brightness(0)), 
+     then colors to orange/warm hue. */
+  filter: invert(1) sepia(1) saturate(600%) hue-rotate(345deg) brightness(0.9) contrast(1.1);
+}
+
+html.light-mode button[aria-label="AI Assistant"] > div {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: #ea580c !important;
+  box-shadow: 0 0 20px rgba(234, 88, 12, 0.8), inset 0 0 15px rgba(234, 88, 12, 0.5) !important;
+}
+html.light-mode button[aria-label="AI Assistant"] svg {
+  color: #ea580c !important;
+  filter: drop-shadow(0 0 8px rgba(234, 88, 12, 0.8)) !important;
+}
+
+html.light-mode button[aria-label="Accessibility Options"] > div {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: #ea580c !important;
+  box-shadow: 0 0 20px rgba(234, 88, 12, 0.8), inset 0 0 15px rgba(234, 88, 12, 0.5) !important;
+}
+html.light-mode button[aria-label="Accessibility Options"] svg {
+  color: #ea580c !important;
+  filter: drop-shadow(0 0 8px rgba(234, 88, 12, 0.8)) !important;
+}
+
+@keyframes pulse-sun {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.1); opacity: 1; }
+}
+
+/* Hide deep space elements in light mode */
+html.light-mode .planet-1,
+html.light-mode .planet-2,
+html.light-mode .planet-3,
+html.light-mode .nebula-1,
+html.light-mode .nebula-2,
+html.light-mode .nebula-3 {
+  opacity: 0 !important;
+  display: none !important;
+}
+
+/* Light Mode Section Suns */
+.section-sun {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, #f97316 0%, #ea580c 40%, transparent 70%);
+  filter: blur(20px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.5s ease;
+}
+
+html.light-mode .section-sun {
+  opacity: 0.6;
+  animation: solar-flare 8s infinite alternate ease-in-out;
+}
+
+.sun-1 {
+  width: 400px;
+  height: 400px;
+  top: 15%;
+  right: -100px;
+}
+
+.sun-2 {
+  width: 600px;
+  height: 600px;
+  top: 45%;
+  left: -200px;
+  animation-delay: -2s !important;
+}
+
+.sun-3 {
+  width: 500px;
+  height: 500px;
+  bottom: 10%;
+  right: 5%;
+  animation-delay: -4s !important;
+}
+
+@keyframes solar-flare {
+  0% {
+    transform: scale(1) rotate(0deg);
+    filter: blur(20px) brightness(1);
+  }
+  50% {
+    transform: scale(1.2) rotate(10deg);
+    filter: blur(30px) brightness(1.3);
+  }
+  100% {
+    transform: scale(0.9) rotate(-5deg);
+    filter: blur(15px) brightness(0.9);
+  }
+}
+
+html.light-mode .text-gradient-cyan {
+  background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+html.light-mode .bg-gradient-to-r.from-\[\#00E5FF\].to-\[\#00B4D8\],
+html.light-mode .bg-gradient-to-r.from-\[\#00E5FF\].to-blue-600 {
+  background: linear-gradient(to right, #ea580c, #f97316) !important;
+  color: white !important;
+}
+
+html.light-mode .bg-gradient-to-r.from-blue-600.to-blue-500 {
+  background: linear-gradient(to right, #ea580c, #f97316) !important;
+  color: white !important;
+  box-shadow: 0 0 20px rgba(234, 88, 12, 0.3) !important;
+}
+
+html.light-mode .text-\[\#00E5FF\] {
+  color: #ea580c !important;
+}
+
+html.light-mode .border-\[\#00E5FF\]\/20 {
+  border-color: rgba(234, 88, 12, 0.2) !important;
+}
+
+html.light-mode .border-t-\[\#00E5FF\] {
+  border-top-color: #ea580c !important;
+}
+
+html.light-mode .bg-\[\#00E5FF\] {
+  background-color: #ea580c !important;
+}
+
+/* Custom Cursor Light Mode */
+html.light-mode .cursor-ring {
+  border-color: #ea580c !important;
+}
+html.light-mode .cursor-dot {
+  background-color: #f97316 !important;
+}
+html.light-mode .cursor-svg path {
+  fill: #ea580c !important;
+}
+html.light-mode .cursor-svg {
+  filter: drop-shadow(0 0 5px rgba(234, 88, 12, 0.8)) !important;
+}
+
+/* Accessibility Menu Light Mode Fixes */
+html.light-mode .accessibility-menu-panel {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light-mode .footer-glass {
+  background: rgba(255, 250, 240, 0.85) !important;
+  border-top-color: rgba(234, 88, 12, 0.2) !important;
+}
+html.light-mode .footer-glass * {
+  border-color: rgba(234, 88, 12, 0.2) !important;
+}
+html.light-mode .footer-glass p,
+html.light-mode .footer-glass a,
+html.light-mode .footer-glass span,
+html.light-mode .footer-glass h3,
+html.light-mode .footer-glass h4 {
+  color: #431407 !important;
+}
+html.light-mode .footer-glass .text-slate-400,
+html.light-mode .footer-glass .text-slate-600 {
+  color: #7c2d12 !important;
+}
+html.light-mode .footer-glass .hover\:text-white:hover {
+  color: #ea580c !important;
+}
+html.light-mode .footer-glass .bg-white\/5 {
+  background-color: rgba(234, 88, 12, 0.05) !important;
+}
+html.light-mode .footer-glass .hover\:bg-white\/10:hover {
+  background-color: rgba(234, 88, 12, 0.1) !important;
+}
+
+html.light-mode .google-map-iframe {
+  filter: none !important;
+}
+
+html.light-mode input::placeholder,
+html.light-mode textarea::placeholder {
+  color: #7c2d12 !important;
+  opacity: 0.6;
+}
+
+html.light-mode .border-white\/20 {
+  border-color: rgba(234, 88, 12, 0.3) !important;
+}
+
+html.light-mode .bg-slate-900 {
+  background-color: #ffffff !important;
+  color: #431407 !important;
+}
+
+/* Gradient opacity fallbacks for light mode */
+html.light-mode .from-\[\#00E5FF\]\/10 {
+  --tw-gradient-from: rgba(234, 88, 12, 0.1) var(--tw-gradient-from-position) !important;
+}
+html.light-mode .from-\[\#00E5FF\]\/20 {
+  --tw-gradient-from: rgba(234, 88, 12, 0.2) var(--tw-gradient-from-position) !important;
+}
+html.light-mode .accessibility-menu-panel h3,
+html.light-mode .accessibility-menu-panel span {
+  color: #0f172a !important;
+}
+html.light-mode .accessibility-menu-panel button {
+  color: #0f172a !important;
+}
+html.light-mode .accessibility-menu-panel .bg-white\/5 {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+  color: #475569 !important;
+}
+html.light-mode .accessibility-menu-panel .bg-white\/5:hover {
+  background-color: #e2e8f0 !important;
+}
+html.light-mode .accessibility-menu-panel .text-slate-400 {
+  color: #64748b !important;
+}
+html.light-mode .accessibility-menu-panel .text-slate-400:hover {
+  color: #0f172a !important;
+}
+
+@media (pointer: fine) {
+  body, body * {
+    cursor: none !important;
+  }
+}
+
+.glass-panel {
+  background: rgba(17, 24, 39, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 
+    inset 0 0 20px rgba(255, 255, 255, 0.02),
+    0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.footer-glass {
+  background: rgba(11, 17, 32, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.perspective-1200 {
+  perspective: 1200px;
+}
+
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+.text-gradient {
+  background: linear-gradient(to right, #F8FAFC, #94A3B8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-cyan {
+  background: linear-gradient(to right, #00E5FF, #3B82F6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(to right, #E9C349, #FBBF24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Primary Button Styles */
+.btn-primary {
+  background: linear-gradient(to right, #00E5FF, #00B4D8);
+  color: #0f172a;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+}
+.btn-primary:hover {
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.6);
+}
+
+html.light-mode .btn-primary {
+  background: linear-gradient(to right, #ea580c, #f97316) !important;
+  color: white !important;
+  box-shadow: 0 0 20px rgba(234, 88, 12, 0.4) !important;
+}
+html.light-mode .btn-primary:hover {
+  box-shadow: 0 0 30px rgba(234, 88, 12, 0.6) !important;
+}
+
+.ambient-shadow-cyan {
+  box-shadow: 0 20px 40px rgba(0, 229, 255, 0.08);
+}
+
+.ambient-shadow-gold {
+  box-shadow: 0 20px 40px rgba(233, 195, 73, 0.08);
+}
+
+.space-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -3;
+  background-color: #000000;
+  background-image: 
+    radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 50px 160px, rgba(255,255,255,0.6), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 160px 120px, rgba(255,255,255,0.4), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 250px 250px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 400px 400px;
+}
+
+.planet-1 {
+  position: absolute;
+  top: 10%;
+  left: 5%;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  /* 3D Sphere effect: light source from top-left */
+  background: radial-gradient(circle at 30% 30%, #00E5FF 0%, #005566 40%, #000000 80%);
+  box-shadow: 
+    inset -20px -20px 40px rgba(0,0,0,0.9), /* Dark side shadow */
+    0 0 40px rgba(0, 229, 255, 0.4), /* Atmospheric glow */
+    -10px -10px 20px rgba(0, 229, 255, 0.2); /* Outer light scatter */
+  z-index: -1;
+}
+
+/* Moon for Planet 1 */
+.planet-1::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  right: -40px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #888888 40%, #000000 80%);
+  box-shadow: inset -5px -5px 10px rgba(0,0,0,0.9);
+}
+
+.planet-2 {
+  position: absolute;
+  top: 45%;
+  right: 5%;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  /* 3D Sphere effect: light source from top-left */
+  background: radial-gradient(circle at 25% 25%, #E9C349 0%, #886611 40%, #000000 80%);
+  box-shadow: 
+    inset -15px -15px 30px rgba(0,0,0,0.9), /* Dark side shadow */
+    0 0 30px rgba(233, 195, 73, 0.3), /* Atmospheric glow */
+    -8px -8px 15px rgba(233, 195, 73, 0.15); /* Outer light scatter */
+  z-index: -1;
+  transform-style: preserve-3d;
+}
+
+/* Saturn Ring for Planet 2 */
+.planet-2::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotateX(75deg) rotateY(-15deg);
+  border: 20px solid rgba(233, 195, 73, 0.3);
+  border-top-color: rgba(233, 195, 73, 0.8);
+  border-bottom-color: rgba(233, 195, 73, 0.1);
+  box-shadow: 
+    0 0 20px rgba(233, 195, 73, 0.4),
+    inset 0 0 20px rgba(233, 195, 73, 0.4);
+  z-index: -2;
+}
+
+/* Moon for Planet 2 */
+.planet-2::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  left: 20px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffccaa 0%, #aa6633 40%, #000000 80%);
+  box-shadow: inset -3px -3px 8px rgba(0,0,0,0.9);
+}
+
+.planet-3 {
+  position: absolute;
+  top: 80%;
+  left: 15%;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #a855f7 0%, #581c87 40%, #000000 80%);
+  box-shadow: 
+    inset -10px -10px 20px rgba(0,0,0,0.9),
+    0 0 25px rgba(168, 85, 247, 0.3);
+  z-index: -1;
+}
+
+.nebula-1 {
+  position: absolute;
+  top: 5%;
+  left: -10%;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.08) 0%, transparent 70%);
+  filter: blur(60px);
+  z-index: -2;
+}
+
+.nebula-2 {
+  position: absolute;
+  top: 40%;
+  right: -10%;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(233, 195, 73, 0.05) 0%, transparent 70%);
+  filter: blur(80px);
+  z-index: -2;
+}
+
+.nebula-3 {
+  position: absolute;
+  top: 75%;
+  left: -5%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.06) 0%, transparent 70%);
+  filter: blur(70px);
+  z-index: -2;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+.animate-glitch {
+  animation: glitch 0.3s infinite;
+  animation-play-state: paused;
+}
+
+.group:hover .animate-glitch {
+  animation-play-state: running;
+}
+
+@keyframes grid-scroll {
+  from { background-position: 0 0; }
+  to { background-position: 60px 60px; }
+}
+
+.animate-grid-scroll {
+  animation: grid-scroll 3s linear infinite;
+}
+
+@keyframes laser-scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}
+
+.animate-laser-scan {
+  animation: laser-scan 4s linear infinite;
+}
+
+/* Shine Hover Effect */
+@keyframes shine-sweep {
+  0% { transform: skewX(-20deg) translateX(-150%); }
+  50% { transform: skewX(-20deg) translateX(250%); }
+  100% { transform: skewX(-20deg) translateX(250%); }
+}
+
+@keyframes gradient-flow {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Epic Button Styles */
+.btn-epic {
+  position: relative;
+  background: #050505;
+  color: #F8FAFC;
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  border-radius: 1rem;
+  overflow: hidden;
+  z-index: 1;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-epic::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(0, 229, 255, 0.15), rgba(233, 195, 73, 0.15), rgba(0, 229, 255, 0.15));
+  background-size: 200% auto;
+  z-index: -1;
+  animation: gradient-flow 4s linear infinite;
+}
+
+.btn-epic::after {
+  content: '';
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  z-index: -2;
+  background: linear-gradient(90deg, #00E5FF, #E9C349, #00E5FF, #E9C349);
+  background-size: 300% auto;
+  border-radius: 1.1rem;
+  animation: gradient-flow 3s linear infinite;
+  opacity: 0.4;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+  filter: blur(10px);
+}
+
+.btn-epic:hover {
+  border-color: rgba(233, 195, 73, 0.8);
+  color: #ffffff;
+  transform: translateY(-2px) scale(1.02);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+.btn-epic:hover::after {
+  opacity: 0.9;
+  filter: blur(16px);
+}
+
+.btn-epic .shine-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(to right, transparent, rgba(233, 195, 73, 0.6), transparent);
+  transform: skewX(-20deg) translateX(-150%);
+}
+
+.btn-epic:hover .shine-layer {
+  animation: shine-sweep 1.5s ease-in-out infinite;
+}
+
+html.light-mode .btn-epic {
+  background: #ffffff;
+  color: #ea580c;
+  border-color: rgba(234, 88, 12, 0.4);
+}
+
+html.light-mode .btn-epic::before {
+  background: linear-gradient(120deg, rgba(234, 88, 12, 0.1), rgba(249, 115, 22, 0.1), rgba(234, 88, 12, 0.1));
+}
+
+html.light-mode .btn-epic::after {
+  background: linear-gradient(90deg, #ea580c, #f97316, #ea580c);
+  opacity: 0.4;
+}
+
+html.light-mode .btn-epic:hover {
+  color: #fff;
+  background: #ea580c;
+}
+
+.hover-shine-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-shine-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: skewX(-20deg) translateX(-150%);
+  z-index: 10;
+}
+
+.hover-shine-effect:hover::before {
+  animation: shine-sweep 1.5s infinite;
+}
+
+/* Accessibility Classes */
+html.a11y-large-text {
+  font-size: 115% !important;
+}
+
+/* OpenDyslexic or similar legible font fallback */
+html.a11y-dyslexia-font *,
+html.a11y-dyslexia-font {
+  font-family: 'Comic Sans MS', 'Comic Neue', 'OpenDyslexic', sans-serif !important;
+  letter-spacing: 0.05em !important;
+  word-spacing: 0.1em !important;
+  line-height: 1.6 !important;
+}
+
+html.a11y-light-mode {
+  filter: invert(1) hue-rotate(180deg);
+  background-color: #F4EEDF; /* Inverted #0B1120 approx */
+}
+
+html.a11y-light-mode img,
+html.a11y-light-mode video {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+html.a11y-reduce-motion *,
+html.a11y-reduce-motion *::before,
+html.a11y-reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
