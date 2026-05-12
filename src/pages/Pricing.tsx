@@ -6,6 +6,7 @@ import { translations } from '../lib/translations';
 import { getPricingData } from '../lib/pricingData';
 import Tooltip from '../components/Tooltip';
 import ScrambleNumber from '../components/ScrambleNumber';
+import SEO from '../components/SEO';
 
 import { submitFormToBridge } from '../lib/submitHelper';
 
@@ -79,6 +80,10 @@ export default function PricingPage({ lang }: { lang: string }) {
 
   return (
     <div className="min-h-screen pt-32 pb-20 px-6 relative overflow-hidden z-10" style={{ perspective: '1200px' }}>
+      <SEO 
+        title={`Prezzi e Investimento | Sogni Digitali`} 
+        description="Scopri i piani di investimento per lo sviluppo della tua presenza online e per l'automazione del tuo business. Prezzi chiari, qualità premium senza compromessi." 
+      />
       <motion.div 
         initial="initial"
         animate="animate"

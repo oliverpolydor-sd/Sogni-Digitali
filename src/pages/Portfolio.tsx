@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, MonitorPlay, Bot, Code2, Sparkles, Smartphone, ArrowRight } from 'lucide-react';
 import { translations } from '../lib/translations';
+import SEO from '../components/SEO';
 
 export default function PortfolioPage({ lang }: { lang: string }) {
   const t = translations[lang as keyof typeof translations] || translations['EN'];
@@ -96,7 +97,10 @@ export default function PortfolioPage({ lang }: { lang: string }) {
 
   return (
     <div className="pt-32 pb-20 px-6 max-w-7xl mx-auto space-y-24">
-      
+      <SEO 
+        title={`Portfolio & Progetti | Sogni Digitali`} 
+        description="Scopri i migliori progetti e case study realizzati dall'agenzia Sogni Digitali tra web design, e-commerce e intelligenza artificiale." 
+      />
       {/* Header */}
       <section className="text-center max-w-3xl mx-auto">
         <motion.div 

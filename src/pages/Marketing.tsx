@@ -4,6 +4,7 @@ import { Brain, Target, Sparkles, TrendingUp, BarChart, Users, ArrowRight, X, Do
 import { Link } from 'react-router-dom';
 import GhostTraffic from '../components/GhostTraffic';
 import PhygitalSandbox from '../components/PhygitalSandbox';
+import SEO from '../components/SEO';
 import { 
   CartesianGrid, 
   Tooltip as RechartsTooltip, 
@@ -388,7 +389,10 @@ export default function MarketingPage({ lang }: { lang: string }) {
 
   return (
     <div className={`pt-32 pb-20 px-6 max-w-7xl mx-auto relative z-10 overflow-hidden ${isArabic ? 'text-right' : 'text-left'}`}>
-      
+      <SEO 
+        title={`Marketing Digitale e AI | Sogni Digitali`} 
+        description="Fai crescere il tuo business con le strategie di Marketing Digitale e Intelligenza Artificiale offerte da Sogni Digitali. ROI Predittivo ed Automazione." 
+      />
       <motion.div {...fadeIn} className="text-center mb-24">
         <h1 className="font-display text-5xl md:text-7xl font-bold tracking-tighter mb-6 relative inline-block">
           {content.heroTitle1} <span className="text-gradient">{content.heroTitle2}</span>

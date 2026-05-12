@@ -5,6 +5,7 @@ import { format, addDays, startOfToday, isSameDay, getDay } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { submitFormToBridge } from '../lib/submitHelper';
 import { generateProposalPDF } from '../lib/pdfGenerator';
+import SEO from '../components/SEO';
 
 const timeSlots = ["10:00", "11:00", "14:00", "15:00", "16:00", "17:00"];
 
@@ -206,6 +207,10 @@ export default function BookingPage({ lang }: { lang: string }) {
 
   return (
     <div className={`min-h-screen pt-32 pb-20 px-6 relative z-10 flex flex-col items-center ${lang === 'AR' ? 'text-right' : 'text-left'}`}>
+      <SEO 
+        title={`Prenota una consulenza | Sogni Digitali`} 
+        description="Fissa un appuntamento o richiedi una consulenza con gli esperti di Sogni Digitali. Scopri le strategie per ottimizzare il tuo business online." 
+      />
       <div className="absolute top-0 w-full h-[500px] bg-gradient-to-b from-[#0B1120] via-[#00E5FF]/5 to-transparent -z-10" />
       
       <div className="w-full max-w-4xl" dir={lang === 'AR' ? 'rtl' : 'ltr'}>

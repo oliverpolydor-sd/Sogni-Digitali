@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { translations } from '../lib/translations';
 import { Check, Star, Zap, Shield, HelpCircle, ArrowRight, Bot, Coins } from 'lucide-react';
+import SEO from '../components/SEO';
 
 export default function PackagesPage({ lang }: { lang: string }) {
   const t = translations[lang as keyof typeof translations] || translations['EN'];
@@ -493,7 +494,10 @@ export default function PackagesPage({ lang }: { lang: string }) {
 
   return (
     <div className={`pt-32 pb-20 px-6 max-w-7xl mx-auto space-y-24 text-${lang === 'AR' ? 'right' : 'left'}`} dir={lang === 'AR' ? 'rtl' : 'ltr'}>
-      
+      <SEO 
+        title={`Pacchetti | Sogni Digitali`} 
+        description="Scopri i pacchetti Sogni Digitali. Piani scalabili, soluzioni pronte ed ottimizzate per farti crescere nel digitale." 
+      />
       {/* Header */}
       <section className="text-center max-w-3xl mx-auto">
         <motion.div 

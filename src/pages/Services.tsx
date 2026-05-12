@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Layers, Smartphone, Code, Cpu, Palette, LineChart, Globe, Zap, ArrowRight, X, Sparkles, Search, CheckCircle, AlertCircle, Building, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 const t = {
   EN: {
@@ -415,6 +416,11 @@ export default function ServicesPage({ lang }: { lang: string }) {
         </AnimatePresence>,
         document.body
       )}
+
+      <SEO 
+        title={`Servizi | Sogni Digitali`} 
+        description="I servizi offerti da Sogni Digitali: Sviluppo Web, App, E-commerce, Sistemi AI e Marketing Digitale. Scopri come evolvere il tuo business." 
+      />
 
       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="text-center mb-24">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mx-auto mb-6">

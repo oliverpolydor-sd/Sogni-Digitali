@@ -23,7 +23,29 @@ export default function AIBot({ lang }: { lang: string }) {
   // Store the chat instance
   const chatRef = useRef<any>(null);
 
-  const systemInstruction = `You are an advanced yet approachable virtual assistant named 'G4B' (Gen-4 Business) for a premium web design and AI agency called 'Sogni Digitali'. Keep the tone professional, energetic, and young, avoiding overly rigid corporate speak while sounding highly capable and tech-forward. Be helpful, concise, and focus on delivering high-value insights. Use minimal emojis but maintain a modern edge.\n\n${botKnowledgeBase}`;
+  const [systemInstruction, setSystemInstruction] = useState(`You are G4B, Sogni Digitali's AI.\n\n${botKnowledgeBase}`);
+
+  useEffect(() => {
+    Promise.all([
+      fetch('/AIchatbot.md').then(res => res.text()),
+      fetch('/brand%20book%20and%20manifest.md').then(res => res.text())
+    ]).then(([chatbot, brandBook]) => {
+      let combined = "";
+      if (chatbot && !chatbot.includes('<!DOCTYPE html>')) combined += chatbot + '\n\n';
+      if (brandBook && !brandBook.includes('<!DOCTYPE html>')) combined += brandBook + '\n\n';
+      
+      const finalInstruction = combined + botKnowledgeBase;
+      setSystemInstruction(finalInstruction);
+      
+      // Re-initialize chat to pick up the new instruction
+      chatRef.current = ai.chats.create({
+        model: "gemini-2.5-flash",
+        config: {
+          systemInstruction: finalInstruction,
+        },
+      });
+    }).catch(err => console.error("Could not load custom AI prompt:", err));
+  }, []);
 
   useEffect(() => {
     if (!chatRef.current) {
@@ -34,7 +56,7 @@ export default function AIBot({ lang }: { lang: string }) {
         },
       });
     }
-  }, [systemInstruction]);
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
