@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Check, Sparkles, Zap, Crown, ArrowLeft, X, ChevronDown, ChevronUp } from "lucide-react";
 import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import { translations } from '../lib/translations';
 import { getPricingData } from '../lib/pricingData';
 import Tooltip from '../components/Tooltip';
+import ScrambleNumber from '../components/ScrambleNumber';
+
+import { submitFormToBridge } from '../lib/submitHelper';
 
 const renderCell = (value: string) => {
   if (value === "✅") return <Check className="w-5 h-5 text-[#00E5FF] mx-auto" />;
@@ -22,6 +25,44 @@ export default function PricingPage({ lang }: { lang: string }) {
   const [isMainTableOpen, setIsMainTableOpen] = useState(false);
   const [isOneShotTableOpen, setIsOneShotTableOpen] = useState(false);
   const [isCareTableOpen, setIsCareTableOpen] = useState(false);
+
+  // Affiliate Form State
+  const [affiliateData, setAffiliateData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const [honeypot, setHoneypot] = useState("");
+
+  const handleAffiliateSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const affiliateId = urlParams.get('ref') || urlParams.get('aff') || urlParams.get('affiliate') || localStorage.getItem('sogni_affiliate_id') || "";
+
+      await submitFormToBridge({
+          ...affiliateData,
+          pageSubject: 'Affiliate Application',
+          source: 'Sogni Digitali Website',
+          is_affiliate: true,
+      }, honeypot, affiliateId);
+
+      setIsSubmitting(false);
+      setIsSuccess(true);
+      setAffiliateData({ name: '', email: '', phone: '', address: '' });
+      setTimeout(() => setIsSuccess(false), 5000);
+    } catch (error) {
+      console.error(error);
+      setIsSubmitting(false);
+      alert(lang === 'IT' ? "Errore durante l'invio. Riprova." : 'Submission error. Please try again.');
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -126,7 +167,7 @@ export default function PricingPage({ lang }: { lang: string }) {
                   }`} />
                   <h3 className={`text-2xl font-display font-bold mb-2 ${pack.popular ? "text-[#00E5FF]" : ""}`}>{pack.name}</h3>
                   <div className={`${pack.name === "Custom" ? "text-2xl" : "text-5xl"} font-bold font-display my-4 min-h-[60px] flex items-center justify-center gap-1`}>
-                    <span className={pack.popular ? "text-white" : "text-[#E9C349]"}>{pack.price}</span>
+                    <ScrambleNumber value={pack.price} duration={1500 + idx * 400} className={pack.popular ? "text-white" : "text-[#E9C349]"} />
                     {pack.name !== "Custom" && <span className="text-xl text-slate-400 font-light">€</span>}
                   </div>
                   <p className="text-slate-400 text-sm font-light">{pack.description}</p>
@@ -241,109 +282,142 @@ export default function PricingPage({ lang }: { lang: string }) {
           </div>
         </motion.section>
 
-        {/* Options One-Shot */}
+        {/* Marketplace: Somnia, Marketing, Care */}
         <section className="mb-32">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">
-                {t.oneShotSectionTitle || t.oneShotTitle1} <span className="text-gradient">{t.oneShotTitle2}</span>
-              </h2>
-              <p className="text-slate-400 font-light max-w-2xl mx-auto mb-6">
-                {t.oneShotSectionDesc}
-              </p>
-              <button 
-                onClick={() => setIsOneShotTableOpen(!isOneShotTableOpen)}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-bold tracking-widest uppercase transition-colors"
-              >
-                {isOneShotTableOpen ? t.hideComparison : t.viewComparison}
-                {isOneShotTableOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </button>
-            </div>
+          <div className="max-w-6xl mx-auto space-y-24">
             
-            {isOneShotTableOpen && (
-              <motion.div 
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                className="overflow-x-auto rounded-3xl border border-white/10 glass-panel"
-              >
-                <table className="w-full text-left border-collapse min-w-[800px]">
-                <thead>
-                  <tr className="border-b border-white/10 bg-white/5">
-                    <th className="p-6 font-display font-bold text-lg text-white w-1/3">{t.oneShotOption}</th>
-                    <th className="p-6 font-display font-bold text-lg text-white w-1/2">Description</th>
-                    <th className="p-6 font-display font-bold text-lg text-center text-[#00E5FF] w-[15%]">Price</th>
-                    <th className="p-6 font-display font-bold text-lg text-center text-white w-[12%]"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {pricingData.boosters.map((booster, featIdx) => {
-                    const slug = booster.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-                    return (
-                    <tr key={featIdx} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                      <td className="p-4 text-slate-300 font-bold text-sm pl-6">{booster.name}</td>
-                      <td className="p-4 text-slate-400 text-sm font-light">{booster.description}</td>
-                      <td className="p-4 text-center text-sm font-bold text-[#00E5FF]">{booster.price}</td>
-                      <td className="p-4 text-center">
-                        <Link to={`/checkout/${slug}`}>
-                          <button className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-white text-xs font-bold tracking-widest uppercase transition-colors border border-white/10">
-                            Buy
-                          </button>
-                        </Link>
-                      </td>
-                    </tr>
-                  )})}
-                </tbody>
-              </table>
-              </motion.div>
-            )}
-          </div>
-        </section>
+            {/* Somnia Tokens */}
+            <div>
+              <div className="text-center mb-12">
+                <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">
+                  Somnia <span className="text-gradient">Token</span>
+                </h2>
+                <p className="text-slate-400 font-light max-w-2xl mx-auto">
+                  {lang === 'EN' ? 'Purchase competence tokens without long-term commitments.' : lang === 'FR' ? 'Achetez des jetons de compétence sans engagement.' : lang === 'AR' ? 'شراء رموز الوحدات بدون التزامات.' : 'Acquista pacchetti di assistenza e sviluppo senza vincoli.'}
+                </p>
+              </div>
+              <div className="grid md:grid-cols-3 gap-6">
+                {pricingData.boosters.slice(0, 3).map((booster, idx) => (
+                  <div key={idx} className="glass-panel p-8 rounded-3xl border border-white/10 hover:border-[#00E5FF]/30 transition-all flex flex-col">
+                    <h3 className="text-xl font-display font-bold text-white mb-2">{booster.name}</h3>
+                    <p className="text-slate-400 font-light text-sm mb-6 flex-grow">{booster.description}</p>
+                    <div className="text-2xl font-display font-bold text-[#00E5FF] mb-6">
+                      <ScrambleNumber value={booster.price} duration={1200 + idx * 300} />
+                    </div>
+                    <Link to={`/checkout/${booster.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="w-full mt-auto">
+                       <button className="w-full py-3 rounded-xl border border-white/10 bg-white/5 hover:bg-[#00E5FF]/10 text-white font-bold text-sm tracking-widest uppercase transition-colors">
+                         Buy Now
+                       </button>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-        {/* La Rente */}
-        <section className="mb-32">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">
-                {t.careTitle1} <span className="text-gradient">{t.careTitle2}</span>{t.careTitle3}
-              </h2>
-              <p className="text-slate-400 font-light max-w-2xl mx-auto mb-6">
-                {t.careDescExtended || t.careDesc}
-              </p>
-              <button 
-                onClick={() => setIsCareTableOpen(!isCareTableOpen)}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-bold tracking-widest uppercase transition-colors"
-              >
-                {isCareTableOpen ? t.hideComparison : t.viewComparison}
-                {isCareTableOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </button>
+            {/* Marketing Services */}
+            <div>
+              <div className="text-center mb-12">
+                <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">
+                  Marketing <span className="text-gradient-cyan">Services</span>
+                </h2>
+                <p className="text-slate-400 font-light max-w-2xl mx-auto">
+                  {lang === 'EN' ? 'Advanced tools to dominate local SEO and lead generation.' : lang === 'FR' ? 'Outils avancés pour dominer le SEO local et la génération de leads.' : lang === 'AR' ? 'أدوات متقدمة للسيطرة على السوق المحلي' : 'Strumenti avanzati per dominare il mercato locale e la SEO.'}
+                </p>
+              </div>
+              <div className="grid md:grid-cols-3 gap-6">
+                {pricingData.boosters.slice(3, 6).map((booster, idx) => (
+                  <div key={idx} className="glass-panel p-8 rounded-3xl border border-white/10 hover:border-[#E9C349]/30 transition-all flex flex-col">
+                    <h3 className="text-xl font-display font-bold text-white mb-2">{booster.name}</h3>
+                    <p className="text-slate-400 font-light text-sm mb-6 flex-grow">{booster.description}</p>
+                    <div className="text-2xl font-display font-bold text-[#E9C349] mb-6">
+                      <ScrambleNumber value={booster.price} duration={1200 + idx * 300} />
+                    </div>
+                    <Link to={`/checkout/${booster.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="w-full mt-auto">
+                       <button className="w-full py-3 rounded-xl border border-white/10 bg-white/5 hover:bg-[#E9C349]/10 text-white font-bold text-sm tracking-widest uppercase transition-colors">
+                         Buy Now
+                       </button>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Sogni Care */}
+            <div>
+              <div className="text-center mb-12">
+                <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">
+                  Sogni <span className="text-gradient">Care</span>
+                </h2>
+                <p className="text-slate-400 font-light max-w-2xl mx-auto">
+                  {t.careDescExtended || t.careDesc}
+                </p>
+              </div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center mb-12">
+                {pricingData.sogniCare.map((plan, idx) => (
+                  <div key={idx} className={`glass-panel p-8 rounded-3xl border ${idx === 1 ? 'border-[#00E5FF]/30 shadow-[0_0_30px_rgba(0,229,255,0.1)]' : 'border-white/10'} hover:border-white/30 transition-all flex flex-col relative`}>
+                    {idx === 1 && <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#00E5FF] text-black text-[10px] font-bold tracking-widest uppercase rounded-full">PRO</div>}
+                    <h3 className={`text-xl font-display font-bold mb-2 ${idx === 1 ? 'text-[#00E5FF]' : 'text-white'}`}>{plan.name}</h3>
+                    <p className="text-slate-400 font-light text-sm mb-6 flex-grow">{plan.description}</p>
+                    <div className="text-2xl font-display font-bold text-white mb-6">
+                      <ScrambleNumber value={plan.price} duration={1200 + idx * 300} />
+                    </div>
+                    <Link to={`/checkout/${plan.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="w-full mt-auto">
+                       <button className={`w-full py-3 rounded-xl font-bold text-sm tracking-widest uppercase transition-colors ${idx === 1 ? 'bg-[#00E5FF] text-black hover:bg-[#00B4D8]' : 'border border-white/10 bg-white/5 hover:bg-white/10 text-white'}`}>
+                         Buy Now
+                       </button>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+
+              {/* Sogni Care Comparison Table */}
+              <div className="text-center mb-8">
+                <button 
+                  onClick={() => setIsCareTableOpen(!isCareTableOpen)}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-bold tracking-widest uppercase transition-colors"
+                >
+                  {isCareTableOpen ? t.hideComparison : (lang === 'EN' ? 'Detailed Care Comparison' : ('Confronto Dettagliato Care'))}
+                  {isCareTableOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                </button>
+              </div>
+              
+              {isCareTableOpen && (pricingData as any).careComparisonData && (
+                <motion.div 
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  className="overflow-x-auto rounded-3xl border border-white/10 glass-panel max-w-4xl mx-auto"
+                >
+                  <table className="w-full text-left border-collapse min-w-[600px]">
+                  <thead>
+                    <tr className="border-b border-white/10 bg-white/5">
+                      <th className="p-6 font-display font-bold text-lg text-white w-1/2">{t.compFeature}</th>
+                      <th className="p-6 font-display font-bold text-lg text-center text-white w-1/4">Sogni Care</th>
+                      <th className="p-6 font-display font-bold text-lg text-center text-[#00E5FF] w-1/4">Sogni Care Pro</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(pricingData as any).careComparisonData.map((category: any, catIdx: number) => (
+                      <React.Fragment key={catIdx}>
+                        <tr className="border-b border-white/10 bg-white/5">
+                          <td colSpan={3} className="p-4 font-display font-bold text-[#00E5FF] tracking-widest uppercase text-sm">
+                            {category.category}
+                          </td>
+                        </tr>
+                        {category.features.map((feature: any, featIdx: number) => (
+                          <tr key={featIdx} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                            <td className="p-4 text-slate-300 font-light text-sm pl-6">{feature.name}</td>
+                            <td className="p-4 text-center text-sm font-light">{renderCell(feature.care)}</td>
+                            <td className="p-4 text-center text-sm font-light bg-[#00E5FF]/5">{renderCell(feature.carePro)}</td>
+                          </tr>
+                        ))}
+                      </React.Fragment>
+                    ))}
+                  </tbody>
+                </table>
+                </motion.div>
+              )}
             </div>
             
-            {isCareTableOpen && (
-              <motion.div 
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                className="overflow-x-auto rounded-3xl border border-white/10 glass-panel"
-              >
-                <table className="w-full text-left border-collapse min-w-[800px]">
-                <thead>
-                  <tr className="border-b border-white/10 bg-white/5">
-                    <th className="p-6 font-display font-bold text-lg text-white w-1/3">{t.compFeature}</th>
-                    <th className="p-6 font-display font-bold text-lg text-white w-1/2">Description</th>
-                    <th className="p-6 font-display font-bold text-lg text-center text-[#00E5FF] w-[15%]">Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {pricingData.sogniCare.map((plan, featIdx) => (
-                    <tr key={featIdx} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                      <td className="p-4 text-slate-300 font-bold text-sm pl-6">{plan.name}</td>
-                      <td className="p-4 text-slate-400 text-sm font-light">{plan.description}</td>
-                      <td className="p-4 text-center text-sm font-bold text-[#00E5FF]">{plan.price}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              </motion.div>
-            )}
           </div>
         </section>
 
@@ -452,7 +526,7 @@ export default function PricingPage({ lang }: { lang: string }) {
               </p>
             </div>
 
-            <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); alert('Grazie per la tua candidatura! Ti contatteremo presto.'); }}>
+            <form className="space-y-6" onSubmit={handleAffiliateSubmit}>
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-slate-300 ml-1">
@@ -461,6 +535,8 @@ export default function PricingPage({ lang }: { lang: string }) {
                   <input 
                     type="text" 
                     required
+                    value={affiliateData.name}
+                    onChange={(e) => setAffiliateData({...affiliateData, name: e.target.value})}
                     className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-[#E9C349] focus:ring-1 focus:ring-[#E9C349]/50 transition-all"
                     placeholder="Mario Rossi"
                   />
@@ -470,6 +546,8 @@ export default function PricingPage({ lang }: { lang: string }) {
                   <input 
                     type="email" 
                     required
+                    value={affiliateData.email}
+                    onChange={(e) => setAffiliateData({...affiliateData, email: e.target.value})}
                     className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-[#E9C349] focus:ring-1 focus:ring-[#E9C349]/50 transition-all"
                     placeholder="mario@email.com"
                   />
@@ -484,6 +562,8 @@ export default function PricingPage({ lang }: { lang: string }) {
                   <input 
                     type="tel" 
                     required
+                    value={affiliateData.phone}
+                    onChange={(e) => setAffiliateData({...affiliateData, phone: e.target.value})}
                     className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-[#E9C349] focus:ring-1 focus:ring-[#E9C349]/50 transition-all"
                     placeholder="+39 333 1234567"
                   />
@@ -495,18 +575,39 @@ export default function PricingPage({ lang }: { lang: string }) {
                   <input 
                     type="text" 
                     required
+                    value={affiliateData.address}
+                    onChange={(e) => setAffiliateData({...affiliateData, address: e.target.value})}
                     className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-[#E9C349] focus:ring-1 focus:ring-[#E9C349]/50 transition-all"
                     placeholder="Via Roma 1, Torino"
                   />
                 </div>
               </div>
 
-              <div className="pt-4">
+              <AnimatePresence>
+                {isSuccess && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }} 
+                    animate={{ opacity: 1, height: 'auto' }} 
+                    exit={{ opacity: 0, height: 0 }}
+                    className="p-4 bg-[#E9C349]/10 border border-[#E9C349]/50 text-[#E9C349] rounded-xl text-center font-medium"
+                  >
+                    {lang === 'IT' ? 'Grazie per la tua candidatura! Ti contatteremo presto.' : 'Thanks for applying! We will contact you soon.'}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <div className="pt-4 space-y-6">
+                <input type="text" name="_honeypot" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
                 <button 
                   type="submit"
-                  className="w-full bg-gradient-to-r from-[#E9C349] to-yellow-600 text-[#0B1120] px-8 py-4 rounded-xl font-bold text-sm tracking-widest uppercase hover:scale-[1.02] transition-transform shadow-[0_0_20px_rgba(233,195,73,0.3)]"
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-r from-[#E9C349] to-yellow-600 text-[#0B1120] px-8 py-4 rounded-xl font-bold text-sm tracking-widest uppercase hover:scale-[1.02] transition-transform shadow-[0_0_20px_rgba(233,195,73,0.3)] disabled:opacity-70 flex items-center justify-center h-[52px]"
                 >
-                  {lang === 'IT' ? 'Invia Candidatura' : lang === 'FR' ? 'Soumettre la Candidature' : 'Submit Application'}
+                  {isSubmitting ? (
+                    <div className="w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                  ) : (
+                    lang === 'IT' ? 'Invia Candidatura' : lang === 'FR' ? 'Soumettre la Candidature' : 'Submit Application'
+                  )}
                 </button>
               </div>
             </form>
@@ -526,12 +627,17 @@ export default function PricingPage({ lang }: { lang: string }) {
             <p className="text-slate-400 font-light mb-8 leading-relaxed">
               {t.finalCtaDesc}
             </p>
-            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="inline-block">
-              <button className="bg-gradient-to-r from-[#00E5FF] to-[#00B4D8] text-[#0B1120] px-8 py-4 rounded-full font-bold text-sm tracking-widest uppercase hover:scale-105 transition-transform ambient-shadow-cyan">
-                {t.finalCtaBtn}
-              </button>
-            </a>
-            <p className="mt-6 text-sm text-slate-500 font-light">{t.finalCtaSub}</p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="inline-block w-full sm:w-auto">
+                <button className="w-full bg-gradient-to-r from-[#00E5FF] to-[#00B4D8] text-[#0B1120] px-8 py-4 rounded-full font-bold text-sm tracking-widest uppercase hover:scale-105 transition-transform ambient-shadow-cyan">
+                  {t.finalCtaBtn}
+                </button>
+              </a>
+              <Link to="/book" className="inline-flex w-full sm:w-auto items-center justify-center bg-white/5 hover:bg-white/10 border border-white/10 text-white px-8 py-4 rounded-full font-bold text-sm tracking-widest uppercase hover:scale-105 transition-transform">
+                {lang === 'IT' ? 'Non sei sicuro? Prenota una chiamata' : lang === 'FR' ? 'Pas sûr ? Prenez rendez-vous' : 'Not sure? Book a call'}
+              </Link>
+            </div>
+            <p className="mt-8 text-sm text-slate-500 font-light">{t.finalCtaSub}</p>
           </div>
         </motion.section>
       </motion.div>

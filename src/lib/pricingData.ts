@@ -7,12 +7,12 @@ export const getPricingData = (lang: string) => {
           price: "849",
           description: "Presenza digitale sovrana",
           features: [
-            "Sito vetrina 5 pagine su misura",
-            "SEO locale ottimizzata Torino/Piemonte",
+            "Sito vetrina o Landing Page (fino a 5 pagine)",
+            "SEO locale ottimizzata",
             "Performance 100/100 mobile",
-            "Design Cyber-Luxury (Glassmorphism)",
-            "Hosting Europa 12 mesi incluso",
-            "Consegna in 7 giorni lavorativi",
+            "Design Cyber-Luxury ultra veloce",
+            "Certificato SSL e 12 mesi di hosting inclusi",
+            "Moduli di contatto intelligenti",
           ],
           cta: "Scegli Essential",
           popular: false,
@@ -23,121 +23,115 @@ export const getPricingData = (lang: string) => {
           description: "La tua prima dipendente digitale",
           features: [
             "Tutto il pacchetto Essential incluso",
+            "Sogni Lead Hub (Mini-CRM integrato)",
             "Chatbot IA prenotazioni 24/7",
-            "Sistema di booking automatico",
-            "Sogni Lead Hub (Mini-CRM interno)",
+            "Sistema di booking automatizzato",
             "Generazione di lead qualificati",
-            "Dashboard analytics",
-            "Formazione 1h utilizzo",
-            "Consegna in 10 giorni lavorativi",
+            "Risposte personalizzate basate sul business",
           ],
           cta: "Scegli Professional",
           popular: true,
         },
         {
           name: "Custom",
-          price: "Parla con il team",
+          price: "Parla con noi",
           description: "Il tuo OS aziendale proprietario",
           features: [
-            "Tutto il pacchetto Professional incluso",
-            "Applicazione aziendale su misura",
-            "App mobile nativa (iOS/Android)",
-            "Sostituzione totale SaaS (HubSpot, ecc.)",
-            "Integrazioni API di terze parti",
-            "Database proprietario",
-            "Formazione team completa",
-            "Supporto prioritario 6 mesi",
+            "Tutto il pacchetto Professional",
+            "Sviluppo piattaforme complesse o App Native",
+            "Sostituzione totale di SaaS costosi",
+            "Integrazioni API complesse e tool",
+            "Database e sistemi su misura",
+            "Creazione E-commerce scalabili",
           ],
           cta: "Parla con il team",
           popular: false,
         },
       ],
       boosters: [
+        { name: "Somnia Start (5 Token)", price: "300€", description: "Pacchetto di 5 unità di competenza. Costo unitario: 60€ (Risparmi 25€)." },
+        { name: "Somnia Agile (10 Token)", price: "550€", description: "Pacchetto di 10 unità di competenza. Costo unitario: 55€ (Risparmi 100€)." },
+        { name: "Somnia Impero (20 Token)", price: "1000€", description: "Pacchetto di 20 unità di competenza. Costo unitario: 50€ (Risparmi 300€)." },
         { name: "Google Local", price: "249€", description: "Per dominare le ricerche locali." },
         { name: "AI Content", price: "349€", description: "Contenuti SEO generati dall'IA e revisionati a mano." },
-        { name: "Reputation QR", price: "179€", description: "Sistema fisico per raccogliere recensioni a 5 stelle su Google nel punto vendita." }
+        { name: "Reputation QR", price: "179€", description: "Sistema fisico (NFC) per raccogliere recensioni a 5 stelle su Google nel punto vendita." }
       ],
       sogniCare: [
-        { name: "Care Essential", price: "49€/mese", description: "" },
-        { name: "Care Pro", price: "99€/mese", description: "" },
-        { name: "Nota", price: "", description: "Le ore fuori contratto sono fatturate a 65 €/h." }
+        { name: "Sogni Care", price: "49€/mese", description: "Sicurezza di base: Hosting standard, Backup mensili, Monitoraggio di base, 30 min/mese micro-interventi." },
+        { name: "Sogni Care Pro", price: "99€/mese", description: "Velocità & Crescita: CDN Globale premium, Backup settimanali, Monitoraggio H24, 1 ora/mese prioritaria, Audit SEO trimestrale." },
+        { name: "Valore di base", price: "65€", description: "1 Token Somnia / 1 Unità di Competenza o 1 Ora di lavoro extra fuori contratto se acquistato singolarmente." }
       ],
       comparisonData: [
         {
           category: "SITO WEB",
           features: [
-            { name: "Pagine su misura", essential: "max 5", professional: "10", custom: "Illimitato" },
+            { name: "Pagine su misura", essential: "max 5", professional: "max 10", custom: "Illimitato" },
             { name: "Design Cyber-Luxury (Glassmorphism)", essential: "✅", professional: "✅", custom: "✅" },
             { name: "Responsive mobile & tablet", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Performance 90+ Core Web Vitals", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "SEO locale ottimizzata Torino/Piemonte", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Blog/CMS integrato", essential: "❌", professional: "✅", custom: "✅" },
-            { name: "Multi-lingua (IT/EN/FR)", essential: "❌", professional: "✅", custom: "✅" },
+            { name: "Performance ottimizzata Core Web Vitals", essential: "✅", professional: "✅", custom: "✅" },
+            { name: "SEO locale ottimizzata", essential: "✅", professional: "✅", custom: "✅" },
+            { name: "Moduli di contatto intelligenti", essential: "✅", professional: "✅", custom: "✅" },
           ]
         },
         {
           category: "AUTOMAZIONE & IA",
           features: [
-            { name: "Chatbot IA prenotazioni 24/7", essential: "❌", professional: "✅", custom: "✅ Avanzato" },
+            { name: "Chatbot IA istruto sul tuo business", essential: "❌", professional: "✅", custom: "✅ Avanzato" },
             { name: "Sistema di booking automatico", essential: "❌", professional: "✅", custom: "✅ Multi-calendari" },
-            { name: "Risposte IA personalizzabili", essential: "❌", professional: "Base", custom: "Avanzato + training" },
+            { name: "Qualificazione lead in automatico", essential: "❌", professional: "✅", custom: "Avanzato + training" },
           ]
         },
         {
           category: "CRM & GESTIONE",
           features: [
             { name: "Sogni Lead Hub (Mini-CRM)", essential: "❌", professional: "✅", custom: "✅ Avanzato" },
-            { name: "Gestione contatti", essential: "❌", professional: "✅", custom: "✅ + segmentazione" },
-            { name: "Pipeline di vendita", essential: "❌", professional: "Base", custom: "Avanzato" },
-            { name: "Automazione email", essential: "❌", professional: "3 scenari", custom: "Illimitato" },
-            { name: "Dashboard analytics", essential: "Base", professional: "Avanzato", custom: "Personalizzato" },
+            { name: "Integrazione Calendario", essential: "❌", professional: "✅", custom: "✅ Avanzata" },
           ]
         },
         {
-          category: "APPLICAZIONI",
+          category: "APPLICAZIONI & E-COMMERCE",
           features: [
             { name: "Applicazione aziendale su misura", essential: "❌", professional: "❌", custom: "✅" },
-            { name: "App mobile nativa (iOS/Android)", essential: "❌", professional: "❌", custom: "✅" },
-            { name: "PWA (Progressive Web App)", essential: "❌", professional: "✅", custom: "✅" },
+            { name: "App mobile nativa o Sistemi SaaS", essential: "❌", professional: "❌", custom: "✅" },
+            { name: "Piattaforma E-commerce scalabile", essential: "❌", professional: "❌", custom: "✅" },
           ]
         },
         {
-          category: "INTEGRAZIONI",
+          category: "SUPPORTO & INFRASTRUTTURA",
           features: [
-            { name: "Sostituzione SaaS (HubSpot, ecc.)", essential: "❌", professional: "Parziale", custom: "Totale" },
-            { name: "API di terze parti (Stripe, ecc.)", essential: "❌", professional: "2 incluse", custom: "Illimitato" },
-            { name: "Webhook & automazioni", essential: "❌", professional: "Base", custom: "Avanzato" },
+            { name: "Certificato SSL e Hosting", essential: "✅ (12 Mesi)", professional: "✅ (12 Mesi)", custom: "Custom" },
+            { name: "Sostituzione vecchi SaaS", essential: "❌", professional: "Parziale", custom: "Totale" },
+            { name: "Integrazione API di terze parti", essential: "❌", professional: "Base", custom: "Illimitato" },
+          ]
+        }
+      ],
+            careComparisonData: [
+        {
+          category: "SICUREZZA & INFRASTRUTTURA",
+          features: [
+            { name: "Hosting Ad Alte Prestazioni", care: "Standard", carePro: "Premium CDN Globale" },
+            { name: "Certificato SSL & Dominio", care: "✅", carePro: "✅" },
+            { name: "Backup dei Dati", care: "Mensile", carePro: "Settimanale" },
+            { name: "Monitoraggio Uptime", care: "Base", carePro: "H24 con Avvisi" },
+            { name: "Sicurezza Proattiva", care: "✅", carePro: "✅ Avanzata" }
           ]
         },
         {
-          category: "DATI & SOVRANITÀ",
+          category: "SUPPORTO & INTERVENTI",
           features: [
-            { name: "Database proprietario", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Hosting Europa (GDPR)", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Export dati completo", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Backup automatico quotidiano", essential: "✅", professional: "✅", custom: "✅" },
-          ]
-        },
-        {
-          category: "SUPPORTO",
-          features: [
-            { name: "Formazione utilizzo", essential: "30 min", professional: "1 ora", custom: "Team completo" },
-            { name: "Supporto post-consegna", essential: "Email 48h", professional: "Email 24h", custom: "Telefono + email" },
-            { name: "Sogni Care offerte (1° anno)", essential: "❌", professional: "Basic", custom: "Business" },
+            { name: "Micro-interventi mensili", care: "30 min/mese", carePro: "1 ora/mese (Prioritaria)" },
+            { name: "Audit SEO e Prestazionale", care: "❌", carePro: "Trimestrale" }
           ]
         }
       ],
       faqs: [
         { question: "Perché 'senza abbonamenti tossici'?", answer: "La maggior parte delle agenzie ti vende un sito e poi ti lascia prigioniero di 10-15 abbonamenti mensili (hosting, CRM, email marketing, chatbot...). Con Sogni Digitali, paghi una volta e possiedi il tuo sistema. L'unico costo ricorrente opzionale è Sogni Care per la manutenzione." },
-        { question: "Cosa succede se voglio interrompere Sogni Care?", answer: "Il tuo sistema continua a funzionare normalmente. Rimani proprietario di tutto. Sogni Care è un'assicurazione di manutenzione, non un affitto. Puoi riprendere la manutenzione internamente o con un altro fornitore in qualsiasi momento." },
-        { question: "Il pacchetto Professional sostituisce davvero HubSpot/Calendly?", answer: "Sì. Il Sogni Lead Hub integra: gestione dei contatti, tracciamento delle opportunità, cronologia delle interazioni, attività e promemoria. Il sistema di prenotazione sostituisce Calendly Premium. Risparmi 50-200€/mese di SaaS." },
-        { question: "I miei dati sono al sicuro?", answer: "Assolutamente. Tutto è ospitato in Europa (principalmente tramite Supabase, ospitato in Germania/Francia). Nessun trasferimento verso gli USA. Piena conformità GDPR. Puoi esportare i tuoi dati in qualsiasi momento." },
-        { question: "Cosa significa 'possiedi il codice'?", answer: "Al momento della consegna e del pagamento finale, diventi proprietario del codice sorgente. Puoi modificarlo, duplicarlo, venderlo. Non manteniamo alcun diritto. È il tuo asset digitale, non un affitto." },
-        { question: "E se volessi passare al pacchetto Custom in seguito?", answer: "Perfetto. Il pacchetto Professional funge da solida base. Recuperiamo il tuo sistema esistente e sviluppiamo le funzionalità aziendali specifiche. Non perdi nulla, guadagni in potenza." },
-        { question: "Come funziona il Chatbot IA?", answer: "Risponde alle domande frequenti, qualifica i lead, fissa appuntamenti 24/7 nel tuo calendario. Formazione continua possibile con Sogni Care Business. Impara dalle tue conversazioni." },
-        { question: "Quali sono i tempi per vedere il mio sito online?", answer: "Essential: 7 giorni. Professional: 10 giorni. Custom: a seconda della complessità (6-12 settimane). Questi tempi iniziano quando ci fornisci i tuoi contenuti (testi, immagini, logo)." },
-        { question: "Posso pagare a rate?", answer: "Sì. 50% all'ordine, 50% alla consegna. Per progetti Custom >5000€, possiamo dilazionare in 3 rate mensili (maggiorazione 5%)." },
-        { question: "Lavorate solo a Torino?", answer: "Il nostro ufficio è a Torino, ma supportiamo clienti in tutto il Piemonte e anche oltre in videochiamata. L'importante è il tuo progetto, non il tuo codice postale." }
+        { question: "Cos'è il sistema a Token Somnia?", answer: "Invece di preventivi lunghi, offriamo Token di competenza (1 Token = 65€ o sconti in pacchetti). Usa un token per una modifica al sito, l'aggiunta di una pagina banner, un'integrazione o ore di sviluppo. Validità di 1 anno con massima trasparenza." },
+        { question: "Il pacchetto Professional sostituisce davvero SaaS costosi?", answer: "Sì. Il Sogni Lead Hub integra: gestione dei contatti, chatbot e tracking. Il sistema di prenotazione sostituisce Calendly. Risparmi 50-200€/mese tagliando servizi esterni superflui." },
+        { question: "La differenza tra Sogni Care e Sogni Care Pro?", answer: "Care è una sicurezza di base con backup mensile a 49€. Care Pro (99€) aggiunge hosting CDN ultraveloce, monitoraggio 24/7, backup settimanale, assistenza prioritaria (1h) e un report SEO trimestrale strategico." },
+        { question: "Cosa significa 'possiedi il codice'?", answer: "Al momento della consegna, ricevi diritti e controllo sulla piattaforma. Puoi modificarlo, spostarlo di hosting o rivenderlo. È il tuo asset digitale aziendale al 100% (Sovereign Digital Presence) come da nostra filosofia." },
+        { question: "Come funziona il Chatbot AI nel pack Professional?", answer: "Lavora H24 qualifica i lead, risponde alle domande frequenti ed inserisce le prenotazioni direttamente nel calendario, imparando dalle configurazioni di base che inseriamo in fase di sviluppo." },
+        { question: "Quali sono i tempi per vedere il mio sito online?", answer: "Essential: 7 giorni lavorativi. Professional: 10/14 giorni lavorativi. Custom: a seconda della complessità (dalle 4 settimane in su). I tempi scattano quando i contenuti sono condivisi." }
       ]
     },
     EN: {
@@ -147,12 +141,12 @@ export const getPricingData = (lang: string) => {
           price: "849",
           description: "Sovereign digital presence",
           features: [
-            "Custom 5-page showcase website",
-            "Local SEO optimized Turin/Piedmont",
+            "Custom showcase website (up to 5 pages)",
+            "Optimized local SEO",
             "Performance 100/100 mobile",
-            "Cyber-Luxury Design (Glassmorphism)",
-            "Europe Hosting 12 months included",
-            "Delivery in 7 working days",
+            "Ultra-fast Cyber-Luxury Design",
+            "SSL Certificate and 12 months hosting",
+            "Intelligent contact forms",
           ],
           cta: "Choose Essential",
           popular: false,
@@ -163,121 +157,113 @@ export const getPricingData = (lang: string) => {
           description: "Your first digital employee",
           features: [
             "All Essential package included",
-            "24/7 AI Booking Chatbot",
-            "Automatic booking system",
             "Sogni Lead Hub (Internal Mini-CRM)",
+            "24/7 AI Booking Chatbot",
+            "Automated booking system",
             "Qualified lead generation",
-            "Analytics dashboard",
-            "1h usage training",
-            "Delivery in 10 working days",
+            "Custom responses based on your business",
           ],
           cta: "Choose Professional",
           popular: true,
         },
         {
           name: "Custom",
-          price: "Talk to our team",
+          price: "Talk to us",
           description: "Your proprietary business OS",
           features: [
             "All Professional package included",
-            "Custom business application",
-            "Native mobile app (iOS/Android)",
-            "Total SaaS replacement (HubSpot, etc.)",
-            "Third-party API integrations",
-            "Proprietary database",
-            "Full team training",
-            "6 months priority support",
+            "Complex platforms or Native App dev",
+            "Total substitution of expensive SaaS",
+            "Complex API and tools integration",
+            "Custom systems and database",
+            "Scalable E-commerce creation",
           ],
           cta: "Talk to our team",
           popular: false,
         },
       ],
       boosters: [
+        { name: "Somnia Start (5 Tokens)", price: "€300", description: "Pack of 5 competence units. Unit cost: €60 (Save €25)." },
+        { name: "Somnia Agile (10 Tokens)", price: "€550", description: "Pack of 10 competence units. Unit cost: €55 (Save €100)." },
+        { name: "Somnia Impero (20 Tokens)", price: "€1000", description: "Pack of 20 competence units. Unit cost: €50 (Save €300)." },
         { name: "Google Local", price: "€249", description: "To dominate local searches." },
         { name: "AI Content", price: "€349", description: "AI-generated SEO content, hand-edited." },
-        { name: "Reputation QR", price: "€179", description: "Physical system to collect 5-star Google reviews at the point of sale." }
+        { name: "Reputation QR", price: "€179", description: "Physical system (NFC) to collect 5-star Google reviews." }
       ],
       sogniCare: [
-        { name: "Care Essential", price: "€49/month", description: "" },
-        { name: "Care Pro", price: "€99/month", description: "" },
-        { name: "Note", price: "", description: "Out-of-contract hours are billed at €65/h." }
+        { name: "Sogni Care", price: "€49/mo", description: "Basic Security: Standard hosting, Monthly backups, Basic monitoring, 30 min/month micro-interventions included." },
+        { name: "Sogni Care Pro", price: "€99/mo", description: "Performance & Growth: Premium Global CDN, Weekly backups, 24/7 monitoring, 1 hour/month priority, Quarterly SEO Audit." },
+        { name: "Base Value", price: "€65", description: "1 Somnia Token / 1 Competence Unit or 1 Hour of extra work out-of-contract if bought separately." }
       ],
       comparisonData: [
         {
           category: "WEB SITE",
           features: [
-            { name: "Custom pages", essential: "max 5", professional: "10", custom: "Unlimited" },
+            { name: "Custom pages", essential: "max 5", professional: "max 10", custom: "Unlimited" },
             { name: "Cyber-Luxury Design (Glassmorphism)", essential: "✅", professional: "✅", custom: "✅" },
             { name: "Mobile & tablet responsive", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Performance 90+ Core Web Vitals", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Local SEO optimized Turin/Piedmont", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Integrated Blog/CMS", essential: "❌", professional: "✅", custom: "✅" },
-            { name: "Multi-language (IT/EN/FR)", essential: "❌", professional: "✅", custom: "✅" },
+            { name: "Optimized Core Web Vitals", essential: "✅", professional: "✅", custom: "✅" },
+            { name: "Optimized local SEO", essential: "✅", professional: "✅", custom: "✅" },
+            { name: "Intelligent forms", essential: "✅", professional: "✅", custom: "✅" },
           ]
         },
         {
           category: "AUTOMATION & AI",
           features: [
-            { name: "24/7 AI Booking Chatbot", essential: "❌", professional: "✅", custom: "✅ Advanced" },
+            { name: "AI Chatbot instructed on business", essential: "❌", professional: "✅", custom: "✅ Advanced" },
             { name: "Automatic booking system", essential: "❌", professional: "✅", custom: "✅ Multi-calendars" },
-            { name: "Customizable AI responses", essential: "❌", professional: "Basic", custom: "Advanced + training" },
+            { name: "Automatic Lead Qualification", essential: "❌", professional: "✅", custom: "Advanced + training" },
           ]
         },
         {
           category: "CRM & MANAGEMENT",
           features: [
             { name: "Sogni Lead Hub (Mini-CRM)", essential: "❌", professional: "✅", custom: "✅ Advanced" },
-            { name: "Contact management", essential: "❌", professional: "✅", custom: "✅ + segmentation" },
-            { name: "Sales pipeline", essential: "❌", professional: "Basic", custom: "Advanced" },
-            { name: "Email automation", essential: "❌", professional: "3 scenarios", custom: "Unlimited" },
-            { name: "Analytics dashboard", essential: "Basic", professional: "Advanced", custom: "Custom" },
+            { name: "Calendar Integration", essential: "❌", professional: "✅", custom: "✅ Advanced" },
           ]
         },
         {
-          category: "APPLICATIONS",
+          category: "APPLICATIONS & E-COMMERCE",
           features: [
             { name: "Custom business application", essential: "❌", professional: "❌", custom: "✅" },
-            { name: "Native mobile app (iOS/Android)", essential: "❌", professional: "❌", custom: "✅" },
-            { name: "PWA (Progressive Web App)", essential: "❌", professional: "✅", custom: "✅" },
+            { name: "Native App or SaaS System", essential: "❌", professional: "❌", custom: "✅" },
+            { name: "Scalable E-commerce platform", essential: "❌", professional: "❌", custom: "✅" },
           ]
         },
         {
-          category: "INTEGRATIONS",
+          category: "SUPPORT & INFRASTRUCTURE",
           features: [
-            { name: "SaaS replacement (HubSpot, etc.)", essential: "❌", professional: "Partial", custom: "Total" },
-            { name: "Third-party APIs (Stripe, etc.)", essential: "❌", professional: "2 included", custom: "Unlimited" },
-            { name: "Webhooks & automations", essential: "❌", professional: "Basic", custom: "Advanced" },
+            { name: "SSL Certificate & Hosting", essential: "✅ (12 Mo)", professional: "✅ (12 Mo)", custom: "Custom" },
+            { name: "Replacement of old SaaS", essential: "❌", professional: "Partial", custom: "Total" },
+            { name: "Third-party APIs Integration", essential: "❌", professional: "Basic", custom: "Unlimited" },
+          ]
+        }
+      ],
+            careComparisonData: [
+        {
+          category: "SECURITY & INFRASTRUCTURE",
+          features: [
+            { name: "High Performance Hosting", care: "Standard", carePro: "Premium Global CDN" },
+            { name: "SSL Certificate & Domain", care: "✅", carePro: "✅" },
+            { name: "Data Backups", care: "Monthly", carePro: "Weekly" },
+            { name: "Uptime Monitoring", care: "Basic", carePro: "24/7 with Alerts" },
+            { name: "Proactive Security", care: "✅", carePro: "✅ Advanced" }
           ]
         },
         {
-          category: "DATA & SOVEREIGNTY",
+          category: "SUPPORT & INTERVENTIONS",
           features: [
-            { name: "Proprietary database", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Europe Hosting (GDPR)", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Full data export", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Daily automatic backup", essential: "✅", professional: "✅", custom: "✅" },
-          ]
-        },
-        {
-          category: "SUPPORT",
-          features: [
-            { name: "Usage training", essential: "30 min", professional: "1 hour", custom: "Full team" },
-            { name: "Post-delivery support", essential: "Email 48h", professional: "Email 24h", custom: "Phone + email" },
-            { name: "Sogni Care offers (1st year)", essential: "❌", professional: "Basic", custom: "Business" },
+            { name: "Monthly Micro-interventions", care: "30 min/mo", carePro: "1 hour/mo (Priority)" },
+            { name: "SEO and Performance Audit", care: "❌", carePro: "Quarterly" }
           ]
         }
       ],
       faqs: [
-        { question: "Why 'no toxic subscriptions'?", answer: "Most agencies sell you a site and then leave you trapped in 10-15 monthly subscriptions (hosting, CRM, email marketing, chatbot...). With Sogni Digitali, you pay once and you own your system. Your only optional recurring cost is Sogni Care for maintenance." },
-        { question: "What happens if I want to stop Sogni Care?", answer: "Your system continues to function normally. You remain the owner of everything. Sogni Care is maintenance insurance, not a rental. You can take over maintenance internally or with another provider at any time." },
-        { question: "Does the Professional Pack really replace HubSpot/Calendly?", answer: "Yes. The Sogni Lead Hub integrates: contact management, opportunity tracking, interaction history, tasks, and reminders. The booking system replaces Calendly Premium. You save 50-200€/month in SaaS." },
-        { question: "Is my data secure?", answer: "Absolutely. Everything is hosted in Europe (primarily via Supabase, hosted in Germany/France). No transfers to the USA. Full GDPR compliance. You can export your data at any time." },
-        { question: "What does 'you own the code' mean?", answer: "Upon delivery and final payment, you become the owner of the source code. You can modify it, duplicate it, sell it. We retain no rights. It's your digital asset, not a rental." },
-        { question: "What if I want to upgrade to the Custom Pack later?", answer: "Perfect. The Professional Pack serves as a solid foundation. We take your existing system and develop the specific business features. You lose nothing, you gain power." },
-        { question: "How does the AI Chatbot work?", answer: "It answers frequently asked questions, qualifies leads, and books appointments 24/7 in your calendar. Continuous training is possible with Sogni Care Business. It learns from your conversations." },
-        { question: "How long until my site is online?", answer: "Essential: 7 days. Professional: 10 days. Custom: depending on complexity (6-12 weeks). These timeframes start when you provide us with your content (texts, images, logo)." },
-        { question: "Can I pay in installments?", answer: "Yes. 50% upon order, 50% upon delivery. For Custom projects >5000€, we can spread it over 3 monthly installments (5% surcharge)." },
-        { question: "Do you only work in Turin?", answer: "Our office is in Turin, but we support clients throughout Piedmont and even beyond via video call. The important thing is your project, not your zip code." }
+        { question: "Why 'no toxic subscriptions'?", answer: "Most agencies sell you a site and then leave you trapped in 10-15 monthly subscriptions (hosting, CRM, email...). With Sogni Digitali, you pay once and own it. Your only optional recurring cost is Sogni Care for maintenance." },
+        { question: "What is the Somnia Token system?", answer: "Instead of long quotes, we offer competence Tokens (1 Token = €65 or discounted in packs). Use a token for a site edit, adding a banner, or dev hours. Valid for 1 year with total transparency." },
+        { question: "Does the Professional Pack really replace expensive SaaS?", answer: "Yes. The Sogni Lead Hub integrates: contact management, chatbot, and tracking. The booking system replaces Calendly. You save €50-200/month by cutting external services." },
+        { question: "Difference between Sogni Care and Sogni Care Pro?", answer: "Care is basic security with monthly backups at €49. Care Pro (€99) adds ultra-fast CDN hosting, 24/7 monitoring, weekly backups, priority support (1h), and a strategic quarterly SEO report." },
+        { question: "What does 'you own the code' mean?", answer: "Upon delivery, you receive full rights and control over the platform. You can modify it, change hosting, or resell it. It's your digital asset (Sovereign Digital Presence)." },
       ]
     },
     FR: {
@@ -287,12 +273,12 @@ export const getPricingData = (lang: string) => {
           price: "849",
           description: "Présence digitale souveraine",
           features: [
-            "Site vitrine 5 pages sur-mesure",
-            "SEO local optimisé Turin/Piémont",
+            "Site 5 pages sur-mesure",
+            "SEO local optimisé",
             "Performance 100/100 mobile",
-            "Design Cyber-Luxury (Glassmorphism)",
-            "Hébergement Europe 12 mois inclus",
-            "Livraison en 7 jours ouvrés",
+            "Design Cyber-Luxury",
+            "Hébergement 12 mois inclus",
+            "Formulaires intelligents",
           ],
           cta: "Choisir Essential",
           popular: false,
@@ -302,125 +288,156 @@ export const getPricingData = (lang: string) => {
           price: "1 599",
           description: "Votre première employée digitale",
           features: [
-            "Tout le pack Essential inclus",
+            "Tout le pack Essential",
+            "Sogni Lead Hub (Mini-CRM)",
             "Chatbot IA réservations 24/7",
-            "Système de booking automatique",
-            "Sogni Lead Hub (Mini-CRM interne)",
-            "Génération de leads qualifiés",
-            "Tableau de bord analytics",
-            "Formation 1h utilisation",
-            "Livraison en 10 jours ouvrés",
+            "Système booking automatique",
+            "Génération leads qualifiés",
+            "Réponses personnalisées métiers",
           ],
           cta: "Choisir Professional",
           popular: true,
         },
         {
           name: "Custom",
-          price: "Parlez à notre équipe",
+          price: "Parlez-nous",
           description: "Votre OS métier propriétaire",
           features: [
-            "Tout le pack Professional inclus",
-            "Application métier sur-mesure",
-            "App mobile native (iOS/Android)",
-            "Remplacement total SaaS (HubSpot, etc.)",
-            "Intégrations API tierces",
-            "Base de données propriétaire",
-            "Formation équipe complète",
-            "Support prioritaire 6 mois",
+            "Tout le pack Professional",
+            "App métier sur-mesure",
+            "Remplacement SaaS complet",
+            "Intégrations API complexes",
+            "Bases de données dédiées",
+            "Création E-commerce"
           ],
           cta: "Parlez à notre équipe",
           popular: false,
         },
       ],
       boosters: [
-        { name: "Google Local", price: "249€", description: "Pour dominer les recherches locales." },
-        { name: "AI Content", price: "349€", description: "Contenu SEO généré par IA et édité à la main." },
-        { name: "Reputation QR", price: "179€", description: "Système physique pour récolter des avis 5 étoiles Google au point de vente." }
+        { name: "Somnia Start (5 Jetons)", price: "300€", description: "Pack de 5 unités. Coût unitaire: 60€ (Économisez 25€)." },
+        { name: "Somnia Agile (10 Jetons)", price: "550€", description: "Pack de 10 unités. Coût unitaire: 55€ (Économisez 100€)." },
+        { name: "Somnia Impero (20 Jetons)", price: "1000€", description: "Pack de 20 unités. Coût unitaire: 50€ (Économisez 300€)." },
+        { name: "Google Local", price: "249€", description: "Dominez les recherches." },
+        { name: "AI Content", price: "349€", description: "Contenu SEO par IA." },
+        { name: "Reputation QR", price: "179€", description: "Système NFC avis Google." }
       ],
       sogniCare: [
-        { name: "Care Essential", price: "49€/mois", description: "" },
-        { name: "Care Pro", price: "99€/mois", description: "" },
-        { name: "Note", price: "", description: "Les heures hors contrat sont facturées 65 €/h." }
+        { name: "Sogni Care", price: "49€/mois", description: "Sécurité de Base: Hébergement standard, Sauvegardes mensuelles, 30 min/mois incluses." },
+        { name: "Sogni Care Pro", price: "99€/mois", description: "Performance & Croissance: CDN Global premium, Sauvegardes hebdo, Suivi H24, 1h/mois prio, Audit SEO trimestriel." },
+        { name: "Valeur de base", price: "65€", description: "1 Jeton Somnia / 1 Unité de compétence ou 1H de travail extra." }
       ],
       comparisonData: [
         {
           category: "SITE WEB",
           features: [
-            { name: "Pages sur-mesure", essential: "max 5", professional: "10", custom: "Illimité" },
-            { name: "Design Cyber-Luxury (Glassmorphism)", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Responsive mobile & tablette", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Performance 90+ Core Web Vitals", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "SEO local optimisé Turin/Piémont", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Blog/CMS intégré", essential: "❌", professional: "✅", custom: "✅" },
-            { name: "Multi-langue (IT/EN/FR)", essential: "❌", professional: "✅", custom: "✅" },
+            { name: "Pages sur-mesure", essential: "max 5", professional: "max 10", custom: "Illimité" },
+            { name: "Design Cyber-Luxury", essential: "✅", professional: "✅", custom: "✅" },
+            { name: "Mobile responsive", essential: "✅", professional: "✅", custom: "✅" }
           ]
         },
         {
-          category: "AUTOMATISATION & IA",
+          category: "AUTOMATISATION",
           features: [
-            { name: "Chatbot IA réservations 24/7", essential: "❌", professional: "✅", custom: "✅ Avancé" },
-            { name: "Système de booking automatique", essential: "❌", professional: "✅", custom: "✅ Multi-calendriers" },
-            { name: "Réponses IA personnalisables", essential: "❌", professional: "Basique", custom: "Avancé + training" },
+            { name: "Chatbot IA métier", essential: "❌", professional: "✅", custom: "✅" },
+            { name: "Booking auto", essential: "❌", professional: "✅", custom: "✅" }
+          ]
+        }
+      ],
+            careComparisonData: [
+        {
+          category: "SÉCURITÉ ET INFRASTRUCTURE",
+          features: [
+            { name: "Hébergement Haute Performance", care: "Standard", carePro: "CDN Global Premium" },
+            { name: "Certificat SSL & Domaine", care: "✅", carePro: "✅" },
+            { name: "Sauvegardes de Données", care: "Mensuel", carePro: "Hebdomadaire" },
+            { name: "Surveillance de l'Uptime", care: "Basique", carePro: "H24 avec Alertes" },
+            { name: "Sécurité Proactive", care: "✅", carePro: "✅ Avancé" }
           ]
         },
         {
-          category: "CRM & GESTION",
+          category: "SUPPORT & INTERVENTIONS",
           features: [
-            { name: "Sogni Lead Hub (Mini-CRM)", essential: "❌", professional: "✅", custom: "✅ Avancé" },
-            { name: "Gestion des contacts", essential: "❌", professional: "✅", custom: "✅ + segmentation" },
-            { name: "Pipeline de vente", essential: "❌", professional: "Basique", custom: "Avancé" },
-            { name: "Automatisation emails", essential: "❌", professional: "3 scénarios", custom: "Illimité" },
-            { name: "Tableau de bord analytics", essential: "Basique", professional: "Avancé", custom: "Personnalisé" },
-          ]
-        },
-        {
-          category: "APPLICATIONS",
-          features: [
-            { name: "Application métier sur-mesure", essential: "❌", professional: "❌", custom: "✅" },
-            { name: "App mobile native (iOS/Android)", essential: "❌", professional: "❌", custom: "✅" },
-            { name: "PWA (Progressive Web App)", essential: "❌", professional: "✅", custom: "✅" },
-          ]
-        },
-        {
-          category: "INTÉGRATIONS",
-          features: [
-            { name: "Remplacement SaaS (HubSpot, etc.)", essential: "❌", professional: "Partiel", custom: "Total" },
-            { name: "API tierces (Stripe, etc.)", essential: "❌", professional: "2 incluses", custom: "Illimité" },
-            { name: "Webhooks & automations", essential: "❌", professional: "Basique", custom: "Avancé" },
-          ]
-        },
-        {
-          category: "DONNÉES & SOUVERAINETÉ",
-          features: [
-            { name: "Base de données propriétaire", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Hébergement Europe (RGPD)", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Export données complet", essential: "✅", professional: "✅", custom: "✅" },
-            { name: "Backup automatique quotidien", essential: "✅", professional: "✅", custom: "✅" },
-          ]
-        },
-        {
-          category: "ACCOMPAGNEMENT",
-          features: [
-            { name: "Formation utilisation", essential: "30 min", professional: "1 heure", custom: "Équipe complète" },
-            { name: "Support post-livraison", essential: "Email 48h", professional: "Email 24h", custom: "Téléphone + email" },
-            { name: "Sogni Care offerte (1ère année)", essential: "❌", professional: "Basic", custom: "Business" },
+            { name: "Micro-interventions mensuelles", care: "30 min/mois", carePro: "1 heure/mois (Priorité)" },
+            { name: "Audit SEO et Performance", care: "❌", carePro: "Trimestriel" }
           ]
         }
       ],
       faqs: [
-        { question: "Pourquoi 'sans abonnement toxique' ?", answer: "La plupart des agences vous vendent un site puis vous laissent prisonnier de 10-15 abonnements mensuels (hébergement, CRM, email marketing, chatbot...). Avec Sogni Digitali, vous payez une fois et vous possédez votre système. Votre seul coût récurrent optionnel est Sogni Care pour la maintenance." },
-        { question: "Que se passe-t-il si je veux arrêter Sogni Care ?", answer: "Votre système continue de fonctionner normalement. Vous restez propriétaire de tout. Sogni Care est une assurance maintenance, pas une location. Vous pouvez reprendre la maintenance en interne ou chez un autre prestataire à tout moment." },
-        { question: "Le Pack Professional remplace vraiment HubSpot/Calendly ?", answer: "Oui. Le Sogni Lead Hub intègre : gestion des contacts, suivi des opportunités, historique des interactions, tâches et rappels. Le système de réservation remplace Calendly Premium. Vous économisez 50-200€/mois de SaaS." },
-        { question: "Mes données sont-elles en sécurité ?", answer: "Absolument. Tout est hébergé en Europe (principalement via Supabase, hébergé en Allemagne/France). Aucun transfert vers les USA. Conformité RGPD totale. Vous pouvez exporter vos données à tout moment." },
-        { question: "Que veut dire 'vous possédez le code' ?", answer: "Dès la livraison et paiement final, vous devenez propriétaire du code source. Vous pouvez le modifier, le dupliquer, le vendre. Nous ne gardons aucun droit. C'est votre actif digital, pas une location." },
-        { question: "Et si je veux évoluer vers le Pack Custom plus tard ?", answer: "Parfait. Le Pack Professional sert de fondation solide. Nous récupérons votre système existant et développons les fonctionnalités métier spécifiques. Vous ne perdez rien, vous gagnez en puissance." },
-        { question: "Comment fonctionne le Chatbot IA ?", answer: "Il répond aux questions fréquentes, qualifie les prospects, prend des rendez-vous 24/7 dans votre calendrier. Formation continue possible avec Sogni Care Business. Il apprend de vos conversations." },
-        { question: "Quel délai pour voir mon site en ligne ?", answer: "Essential : 7 jours. Professional : 10 jours. Custom : selon complexité (6-12 semaines). Ces délais commencent quand vous nous fournissez vos contenus (textes, images, logo)." },
-        { question: "Puis-je payer en plusieurs fois ?", answer: "Oui. 50% à la commande, 50% à la livraison. Pour les projets Custom >5000€, nous pouvons étaler sur 3 mensualités (majoration 5%)." },
-        { question: "Vous travaillez uniquement à Turin ?", answer: "Notre bureau est à Turin, mais nous accompagnons des clients dans tout le Piémont et même au-delà en visio. L'important est votre projet, pas votre code postal." }
+        { question: "Pourquoi 'sans abonnement toxique' ?", answer: "Vous payez une fois et vous possédez votre système. Seul coût récurrent: Sogni Care optionnel." },
+        { question: "Système Jetons Somnia ?", answer: "Achetez des unités de compétences au lieu de demander des devis et attendre. Validité 1 an." }
+      ]
+    },
+    AR: {
+      packs: [
+        {
+          name: "Essential",
+          price: "849",
+          description: "حضورك الرقمي",
+          features: ["5 صفحات", "السيو المحلي", "أداء موبايل 100/100", "تصميم عصري سريع", "استضافة لمدة سنة", "نماذج ذكية"],
+          cta: "اختر Essential",
+          popular: false
+        },
+        {
+          name: "Professional",
+          price: "1 599",
+          description: "موظفك الرقمي الأول",
+          features: ["يشمل الأساسي", "Mini-CRM", "شات بوت ذكي 24/7", "نظام حجز آلي", "جلب عملاء وتأهيلهم", "ردود مخصصة"],
+          cta: "اختر Professional",
+          popular: true
+        },
+        {
+          name: "Custom (Infinity)",
+          price: "تحدث إلينا",
+          description: "برمجياتك الخاصة",
+          features: ["يشمل الاحترافي", "تطبيقات أو منصات", "استبدال اشتراكات خارجية", "دمج API", "قاعدة بيانات خاصة", "متجر الكتروني ضخم"],
+          cta: "تحدث إلينا",
+          popular: false
+        }
+      ],
+      boosters: [
+        { name: "Somnia Start (5 رموز)", price: "300€", description: "5 وحدات دعم وتطوير. توفير 25€" },
+        { name: "Somnia Agile (10 رموز)", price: "550€", description: "10 وحدات دعم وتطوير. توفير 100€" },
+        { name: "Somnia Impero (20 رمز)", price: "1000€", description: "20 وحدة دعم وتطوير. توفير 300€" }
+      ],
+      sogniCare: [
+        { name: "Sogni Care", price: "49€/شهريا", description: "حماية أساسية وتحديثات دورية مع 30 دقيقة شهريا للدعم." },
+        { name: "Sogni Care Pro", price: "99€/شهريا", description: "أداء استثنائي عبر CDN عالمي وتقارير شهرية وتدخل بدعم 60 دقيقة." },
+        { name: "سعر الوحدة", price: "65€", description: "سعر رمز سومنيا (Somnia) إضافي للعمل أو الدعم خارج العقود." }
+      ],
+      comparisonData: [
+        {
+          category: "المميزات",
+          features: [
+            { name: "تصميم فخم وعصري", essential: "✅", professional: "✅", custom: "✅" },
+            { name: "شات بوت للحجوزات", essential: "❌", professional: "✅", custom: "✅" }
+          ]
+        }
+      ],
+            careComparisonData: [
+        {
+          category: "الأمان والبنية التحتية",
+          features: [
+            { name: "استضافة عالية الأداء", care: "قياسي", carePro: "CDN عالمي" },
+            { name: "شهادة SSL ونطاق", care: "✅", carePro: "✅" },
+            { name: "النسخ الاحتياطي للبيانات", care: "شهري", carePro: "أسبوعي" },
+            { name: "مراقبة وقت التشغيل", care: "أساسي", carePro: "24/7 مع تنبيهات" },
+            { name: "أمان استباقي", care: "✅", carePro: "✅ متقدم" }
+          ]
+        },
+        {
+          category: "الدعم والتدخلات",
+          features: [
+            { name: "تدخلات صغيرة شهرية", care: "30 دقيقة/شهر", carePro: "1 ساعة/شهر (أولوية)" },
+            { name: "تدقيق تحسين محركات البحث والأداء", care: "❌", carePro: "فصلي" }
+          ]
+        }
+      ],
+      faqs: [
+        { question: "لماذا الاهتمام بالسيادة؟", answer: "أنت تملك نظامك لتجنب الإيجارات للبرامج الخارجية." }
       ]
     }
   };
 
-  return data[lang as keyof typeof data] || data['IT'];
+  return data[lang as keyof typeof data] || data['EN']; // fallback to en if unverified lang
 };

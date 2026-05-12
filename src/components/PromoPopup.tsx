@@ -2,23 +2,41 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Check, Gift } from 'lucide-react';
 import { translations } from '../lib/translations';
+import { submitFormToBridge } from '../lib/submitHelper';
 
 export default function PromoPopup({ lang }: { lang: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [honeypot, setHoneypot] = useState('');
 
   const t = translations[lang as keyof typeof translations];
 
   useEffect(() => {
-    // Check if user already saw the promo
     const hasSeenPromo = localStorage.getItem('hasSeenPromo');
+    let timer: NodeJS.Timeout;
+    
     if (!hasSeenPromo) {
-      const timer = setTimeout(() => {
+      // Original timer-based popup
+      timer = setTimeout(() => {
         setIsOpen(true);
-      }, 5000); // 5 seconds
-      return () => clearTimeout(timer);
+      }, 30000); // 30 seconds instead of 5 for timer
+
+      // Exit intent detection
+      const handleMouseLeave = (e: MouseEvent) => {
+        if (e.clientY <= 10 && !localStorage.getItem('hasSeenPromo')) {
+          setIsOpen(true);
+          // Don't trigger again during this session
+        }
+      };
+
+      document.addEventListener('mouseleave', handleMouseLeave);
+      
+      return () => {
+        clearTimeout(timer);
+        document.removeEventListener('mouseleave', handleMouseLeave);
+      };
     }
   }, []);
 
@@ -27,13 +45,21 @@ export default function PromoPopup({ lang }: { lang: string }) {
     localStorage.setItem('hasSeenPromo', 'true');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
 
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const affiliateId = urlParams.get('ref') || urlParams.get('aff') || urlParams.get('affiliate') || localStorage.getItem('sogni_affiliate_id') || "";
+      
+      await submitFormToBridge(
+        { email, source: 'Promo Popup', pageSubject: 'Lead from Promo' },
+        honeypot,
+        affiliateId
+      );
+      
       setIsSubmitting(false);
       setIsSuccess(true);
       localStorage.setItem('hasSeenPromo', 'true');
@@ -42,7 +68,10 @@ export default function PromoPopup({ lang }: { lang: string }) {
       setTimeout(() => {
         setIsOpen(false);
       }, 3000);
-    }, 1500);
+    } catch (error) {
+      console.error(error);
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -102,6 +131,7 @@ export default function PromoPopup({ lang }: { lang: string }) {
                     placeholder={t.promoInput}
                     className="w-full bg-white/5 border border-white/10 focus:border-[#E9C349] text-white rounded-xl p-4 outline-none transition-colors text-center"
                   />
+                  <input type="text" name="_honeypot" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
                   <button 
                     disabled={isSubmitting}
                     className="w-full py-4 rounded-xl bg-gradient-to-r from-[#E9C349] to-[#FBBF24] text-[#0B1120] font-bold text-sm tracking-widest uppercase hover:scale-105 transition-transform ambient-shadow-gold disabled:opacity-70 disabled:hover:scale-100 flex items-center justify-center"

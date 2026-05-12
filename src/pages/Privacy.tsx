@@ -13,7 +13,7 @@ export default function Privacy({ lang }: { lang: string }) {
       sections: [
         {
           title: "1. Introduzione",
-          text: "Sogni Digitali prende sul serio la tua privacy. Questa politica descrive come raccogliamo, utilizziamo e proteggiamo i tuoi dati personali ai sensi del GDPR (Regolamento UE 2016/679)."
+          text: "Sogni Digitali di Desire Laval Oliver Polydor prende sul serio la tua privacy. Questa politica descrive come raccogliamo, utilizziamo e proteggiamo i tuoi dati personali ai sensi del GDPR (Regolamento UE 2016/679)."
         },
         {
           title: "2. Dati che Raccogliamo",
@@ -25,11 +25,11 @@ export default function Privacy({ lang }: { lang: string }) {
         },
         {
           title: "4. Archiviazione e Sicurezza dei Dati",
-          text: "I tuoi dati vengono archiviati su server sicuri gestiti dai nostri partner di hosting nel rispetto degli standard UE. Adottiamo misure di sicurezza ragionevoli per prevenire l'accesso non autorizzato ai tuoi dati."
+          text: "I tuoi dati vengono archiviati su server sicuri gestiti dai nostri partner di hosting (Hostinger, Google Cloud) nel rispetto degli standard UE."
         },
         {
           title: "5. I Tuoi Diritti GDPR",
-          text: "Hai il diritto di accedere, rettificare, scaricare o richiedere la cancellazione dei tuoi dati personali in qualsiasi momento (Diritto all'oblio). Puoi inoltre negare o ritirare il consenso all'uso dei cookie. Per esercitare questi diritti, contattaci a privacy@sognidigitali.com."
+          text: "Hai il diritto di accedere, rettificare, scaricare o richiedere la cancellazione dei tuoi dati personali in qualsiasi momento (Diritto all'oblio). Per esercitare questi diritti, contattaci a contact@sognidigitali.com."
         },
         {
           title: "6. Modifiche a Questa Politica",
@@ -43,7 +43,7 @@ export default function Privacy({ lang }: { lang: string }) {
       sections: [
         {
           title: "1. Introduction",
-          text: "Sogni Digitali prend votre vie privée au sérieux. Cette politique décrit comment nous collectons, utilisons et protégeons vos données personnelles conformément au RGPD (Règlement UE 2016/679)."
+          text: "Sogni Digitali di Desire Laval Oliver Polydor prend votre vie privée au sérieux. Cette politique décrit comment nous collectons, utilisons et protégeons vos données personnelles conformément au RGPD (Règlement UE 2016/679)."
         },
         {
           title: "2. Données que nous collectons",
@@ -55,11 +55,11 @@ export default function Privacy({ lang }: { lang: string }) {
         },
         {
           title: "4. Stockage et sécurité des données",
-          text: "Vos données sont stockées sur des serveurs sécurisés gérés par nos partenaires d'hébergement, dans le respect des normes européennes. Nous mettons en œuvre des mesures adaptées pour empêcher tout accès non autorisé à vos informations."
+          text: "Vos données sont stockées sur des serveurs sécurisés gérés par nos partenaires d'hébergement (Hostinger, Google Cloud), dans le respect des normes européennes."
         },
         {
           title: "5. Vos droits RGPD",
-          text: "Vous avez le droit d'accéder à vos données personnelles, de les modifier, de les télécharger ou de demander leur effacement à tout moment (Droit à l'oubli). Vous pouvez de plus refuser ou retirer votre consentement aux cookies. Pour exercer ces droits, contactez-nous à privacy@sognidigitali.com."
+          text: "Vous avez le droit d'accéder à vos données personnelles, de les modifier, de les télécharger ou de demander leur effacement à tout moment. Pour exercer ces droits, contactez-nous à contact@sognidigitali.com."
         },
         {
           title: "6. Modifications de cette politique",

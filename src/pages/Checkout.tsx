@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft, CheckCircle2, ShieldCheck, ChevronRight, Check, Rocket, CreditCard, Landmark } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
+import { submitFormToBridge } from '../lib/submitHelper';
 
 const translations = {
   IT: {
@@ -169,12 +170,50 @@ export default function Checkout({ lang }: { lang: string }) {
     );
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate payment processing
-    setTimeout(() => {
-      setIsSubmitted(true);
-    }, 1500);
+    
+    setIsSubmitting(true);
+    const form = e.target as HTMLFormElement;
+    
+    // Quick form data extraction since there's no state bindings
+    const elements = form.elements as any;
+    const formData = {
+      name: `${elements[0]?.value || ''} ${elements[1]?.value || ''}`.trim(),
+      email: elements[2]?.value,
+      phone: elements[3]?.value,
+      company: elements[4]?.value,
+      project_details: elements[5]?.value || '',
+      checkout_plan: `${plan?.name || ''} (${planId || ''})`,
+      checkout_discount: giftCode || 'None',
+      checkout_maintenance: selectedMaintenance || 'None',
+      checkout_extras: selectedExtras.join(', ') || 'None',
+    };
+
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const affiliateId = urlParams.get('ref') || urlParams.get('aff') || urlParams.get('affiliate') || localStorage.getItem('sogni_affiliate_id') || "";
+
+      await submitFormToBridge({
+        ...formData,
+        pageSubject: 'Checkout Initiation',
+        source: 'Sogni Digitali Website Checkout',
+      }, honeypot, affiliateId);
+      
+      // Simulate payment processing flow locally
+      setTimeout(() => {
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+      }, 1500);
+      
+    } catch (error) {
+      console.error(error);
+      setIsSubmitting(false);
+      alert("Error initiating checkout");
+    }
   };
 
   const basePrice = plan.price;
@@ -296,9 +335,12 @@ export default function Checkout({ lang }: { lang: string }) {
                   <textarea rows={4} className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00E5FF] transition-colors resize-none"></textarea>
                 </div>
 
-                <button type="submit" className="w-full py-4 rounded-xl bg-gradient-to-r from-[#00E5FF] to-[#00B4D8] text-[#0B1120] font-bold text-sm tracking-widest uppercase hover:scale-[1.02] transition-transform mt-8 flex items-center justify-center gap-2 ambient-shadow-cyan">
-                  {t.submitBtn} <ChevronRight className="w-4 h-4" />
-                </button>
+                <div className="space-y-4">
+                  <input type="text" name="_honeypot" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+                  <button type="submit" disabled={isSubmitting} className="w-full py-4 rounded-xl bg-gradient-to-r from-[#00E5FF] to-[#00B4D8] text-[#0B1120] font-bold text-sm tracking-widest uppercase hover:scale-[1.02] transition-transform mt-8 flex items-center justify-center gap-2 ambient-shadow-cyan">
+                    {isSubmitting ? <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" /> : <>{t.submitBtn} <ChevronRight className="w-4 h-4" /></>}
+                  </button>
+                </div>
 
                 <div className="flex items-center justify-center gap-2 text-slate-400 text-sm mt-4">
                   <ShieldCheck className="w-4 h-4 text-[#00E5FF]" />

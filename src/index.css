@@ -23,8 +23,13 @@ body {
 }
 
 /* Light Mode Overrides */
+html.light-mode {
+  --color-brand-bg: #fffaf0;
+  --color-brand-surface: rgba(255, 255, 255, 0.95);
+}
+
 html.light-mode body {
-  background-color: #fffaf0; /* Warm white */
+  background-color: var(--color-brand-bg); /* Warm white */
   color: #431407; /* Deep warm brown/slate */
 }
 html.light-mode .text-slate-50,
@@ -94,22 +99,22 @@ html.light-mode img[alt="Sogni Digitali Logo"] {
   filter: invert(1) sepia(1) saturate(600%) hue-rotate(345deg) brightness(0.9) contrast(1.1);
 }
 
-html.light-mode button[aria-label="AI Assistant"] > div {
+html.light-mode .aibot-toggle-btn > div {
   background-color: rgba(255, 255, 255, 0.9) !important;
   border-color: #ea580c !important;
   box-shadow: 0 0 20px rgba(234, 88, 12, 0.8), inset 0 0 15px rgba(234, 88, 12, 0.5) !important;
 }
-html.light-mode button[aria-label="AI Assistant"] svg {
+html.light-mode .aibot-toggle-btn svg {
   color: #ea580c !important;
   filter: drop-shadow(0 0 8px rgba(234, 88, 12, 0.8)) !important;
 }
 
-html.light-mode button[aria-label="Accessibility Options"] > div {
+html.light-mode .accessibility-toggle-btn > div {
   background-color: rgba(255, 255, 255, 0.9) !important;
   border-color: #ea580c !important;
   box-shadow: 0 0 20px rgba(234, 88, 12, 0.8), inset 0 0 15px rgba(234, 88, 12, 0.5) !important;
 }
-html.light-mode button[aria-label="Accessibility Options"] svg {
+html.light-mode .accessibility-toggle-btn svg {
   color: #ea580c !important;
   filter: drop-shadow(0 0 8px rgba(234, 88, 12, 0.8)) !important;
 }
@@ -404,17 +409,36 @@ html.light-mode .btn-primary:hover {
   height: 100vh;
   z-index: -3;
   background-color: #000000;
-  background-image: 
-    radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 50px 160px, rgba(255,255,255,0.6), rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 90px 40px, #ffffff, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,0.9), rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 160px 120px, rgba(255,255,255,0.4), rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 250px 250px, #ffffff, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), rgba(0,0,0,0));
+}
+
+.space-layer-1, .space-layer-2, .space-layer-3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-repeat: repeat;
+  pointer-events: none;
+}
+
+.space-layer-1 {
+  background-image: radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,0.1), rgba(0,0,0,0)),
+                    radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,0.15), rgba(0,0,0,0)),
+                    radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.1), rgba(0,0,0,0));
+  background-size: 200px 200px;
+}
+
+.space-layer-2 {
+  background-image: radial-gradient(2px 2px at 50px 160px, rgba(255,255,255,0.2), rgba(0,0,0,0)),
+                    radial-gradient(1px 1px at 160px 120px, rgba(255,255,255,0.15), rgba(0,0,0,0)),
+                    radial-gradient(1px 1px at 250px 250px, rgba(255,255,255,0.2), rgba(0,0,0,0));
   background-size: 400px 400px;
+}
+
+.space-layer-3 {
+  background-image: radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,0.3), rgba(0,0,0,0)),
+                    radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.25), rgba(0,0,0,0));
+  background-size: 600px 600px;
 }
 
 .planet-1 {
@@ -726,4 +750,66 @@ html.a11y-reduce-motion *::after {
   animation-iteration-count: 1 !important;
   transition-duration: 0.01ms !important;
   scroll-behavior: auto !important;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+.mirror-icon {
+  display: inline-block;
+  transform: scaleX(-1);
+}
+
+/* Accessibility Advanced Styles */
+html.a11y-high-contrast {
+  filter: contrast(1.5) saturate(1.2) brightness(1.1) !important;
+}
+
+html.a11y-highlight-links a, 
+html.a11y-highlight-links button {
+  outline: 4px solid #E9C349 !important;
+  outline-offset: 4px !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 3px !important;
+  text-decoration-skip-ink: none !important;
+}
+
+html.a11y-text-spacing * {
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.16em !important;
+}
+
+html.a11y-hide-images img,
+html.a11y-hide-images video,
+html.a11y-hide-images svg {
+  visibility: hidden !important;
+}
+
+html.a11y-big-cursor,
+html.a11y-big-cursor * {
+  cursor: url('data:image/svg+xml;utf8,<svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2L9.5 22L12.5 12.5L22 9.5L2 2Z" fill="%23000000" stroke="%23FFFFFF" stroke-width="2" stroke-linejoin="round"/></svg>') 0 0, auto !important;
+}
+
+html.a11y-line-height * {
+  line-height: 2 !important;
+}
+
+html.a11y-text-align-left * {
+  text-align: left !important;
+}
+
+html.a11y-saturation {
+  filter: saturate(2) !important;
 }

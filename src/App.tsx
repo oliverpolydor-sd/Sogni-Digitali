@@ -6,25 +6,39 @@ import Tooltip from './components/Tooltip';
 import TikTokIcon from './components/TikTokIcon';
 import { useTheme } from './contexts/ThemeContext';
 
-// TODO: Replace this with your deployed Google Apps Script Web App URL
-const WEBHOOK_URL = "https://ais-dev-ke2nxixc46dxar4iggmjtj-267505094308.europe-west2.run.app/api/leads/capture";
-
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { translations } from './lib/translations';
+import { submitFormToBridge } from './lib/submitHelper';
 import { getPricingData } from './lib/pricingData';
-import Pricing from './pages/Pricing';
-import Checkout from './pages/Checkout';
-import Terms from './pages/Terms';
-import Privacy from './pages/Privacy';
-import Legal from './pages/Legal';
-import Linktree from './pages/Linktree';
+import ScrollToTopButton from './components/ScrollToTopButton';
+import PromoPopup from './components/PromoPopup';
 import { AccessibilityProvider } from './contexts/AccessibilityContext';
 import AccessibilityMenu from './components/AccessibilityMenu';
 import CookieBanner from './components/CookieBanner';
 import AIBot from './components/AIBot';
-import Dodo3D from './components/Dodo3D';
 import SunBackground from './components/SunBackground';
-import Rocket3D from './components/Rocket3D';
+import LoadingScreen from './components/LoadingScreen';
+import ScrambleNumber from './components/ScrambleNumber';
+
+// Lazy loaded pages to improve performance
+const Pricing = React.lazy(() => import('./pages/Pricing'));
+const Checkout = React.lazy(() => import('./pages/Checkout'));
+const Terms = React.lazy(() => import('./pages/Terms'));
+const Privacy = React.lazy(() => import('./pages/Privacy'));
+const Legal = React.lazy(() => import('./pages/Legal'));
+const Linktree = React.lazy(() => import('./pages/Linktree'));
+const MarketingPage = React.lazy(() => import('./pages/Marketing'));
+const PackagesPage = React.lazy(() => import('./pages/Packages'));
+const PortfolioPage = React.lazy(() => import('./pages/Portfolio'));
+const LuminaDetail = React.lazy(() => import('./pages/LuminaDetail'));
+const NexusDetail = React.lazy(() => import('./pages/NexusDetail'));
+const ServicesPage = React.lazy(() => import('./pages/Services'));
+const BookingPage = React.lazy(() => import('./pages/Booking'));
+const NotFound = React.lazy(() => import('./pages/NotFound'));
+
+// Lazy loaded heavy 3D components
+const Dodo3D = React.lazy(() => import('./components/Dodo3D'));
+const Rocket3D = React.lazy(() => import('./components/Rocket3D'));
 
 function ScrollToHash() {
   const location = useLocation();
@@ -55,9 +69,10 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 );
 
 import GlobalLoader from './components/GlobalLoader';
+import Analytics from './components/Analytics';
 
 function AppContent() {
-  const { scrollY } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll();
   const { isLightMode, toggleTheme } = useTheme();
   
   // Use location inside Router
@@ -72,21 +87,30 @@ function AppContent() {
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileServiziOpen, setIsMobileServiziOpen] = useState(false);
   const [lang, setLang] = useState('IT');
+  
+  // Handle Arabic RTL
+  useEffect(() => {
+    document.documentElement.dir = lang === 'AR' ? 'rtl' : 'ltr';
+    document.documentElement.lang = lang.toLowerCase();
+  }, [lang]);
+
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', website: '', business: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
 
   // High-tech luxury animation variants
   const luxuryReveal = {
     initial: { opacity: 0, y: 40, filter: 'blur(12px)' },
-    animate: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } }
+    animate: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] as any } }
   };
 
   const luxuryStagger = {
     initial: { opacity: 0, scale: 0.95, filter: 'blur(10px)' },
-    whileInView: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } },
+    whileInView: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 1, ease: [0.16, 1, 0.3, 1] as any } },
     viewport: { once: true, margin: "-100px" }
   };
 
@@ -103,26 +127,35 @@ function AppContent() {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Honeypot check is done server-side, but we can also block it here if we want.
+    // We proceed normally and send the honeypot value to the bridge.
+
     setIsSubmitting(true);
     
     try {
-      await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const urlParams = new URLSearchParams(window.location.search);
+      const affiliateId = urlParams.get('ref') || urlParams.get('aff') || urlParams.get('affiliate') || localStorage.getItem('sogni_affiliate_id') || "";
+      
+      if (affiliateId) {
+        localStorage.setItem('sogni_affiliate_id', affiliateId);
+      }
+
+      await submitFormToBridge(
+        {
           ...formData,
+          project_details: formData.message, // Map message to project_details for consistency
+          pageSubject: 'Sogni Digitali Form',
           source: 'Sogni Digitali Website',
-          createdAt: new Date().toISOString()
-        })
-      });
+        },
+        honeypot,
+        affiliateId
+      );
       
       setIsSubmitting(false);
       setIsSuccess(true);
       setFormData({ name: '', email: '', phone: '', website: '', business: '', message: '' });
-      setTimeout(() => setIsSuccess(false), 5000); // Reset after 5s
+      setTimeout(() => setIsSuccess(false), 5000);
     } catch (error) {
       console.error("Error submitting form:", error);
       setIsSubmitting(false);
@@ -142,11 +175,24 @@ function AppContent() {
 
   return (
     <>
+      <LoadingScreen />
+      <Analytics />
       <ScrollToHash />
       <GlobalLoader />
+      <ScrollToTopButton />
+      <PromoPopup lang={lang} />
+      {/* Scroll Progress Tracker */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00E5FF] to-[#E9C349] origin-left z-[10000]"
+        style={{ scaleX: scrollYProgress }}
+      />
     <div className="min-h-screen text-slate-50 selection:bg-[#00E5FF]/30 selection:text-white relative overflow-x-hidden">
       {/* Global Space Background */}
-      <div className="space-bg" />
+      <div className="space-bg">
+        <motion.div className="space-layer-1" style={{ y: useTransform(scrollY, [0, 5000], [0, -200]) }} />
+        <motion.div className="space-layer-2" style={{ y: useTransform(scrollY, [0, 5000], [0, -500]) }} />
+        <motion.div className="space-layer-3" style={{ y: useTransform(scrollY, [0, 5000], [0, -900]) }} />
+      </div>
       <SunBackground />
       <motion.div className="nebula-1" style={{ y: yNebula1 }} />
       <motion.div className="nebula-2" style={{ y: yNebula2 }} />
@@ -184,17 +230,36 @@ function AppContent() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-10">
-            <Link to="/#servizi" className="text-sm font-medium tracking-widest uppercase text-slate-400 hover:text-white transition-colors">{translations[lang as keyof typeof translations].navServices}</Link>
-            <Link to="/#marketing" className="text-sm font-medium tracking-widest uppercase text-slate-400 hover:text-white transition-colors">{translations[lang as keyof typeof translations].navMarketing}</Link>
-            <Link to="/pricing" className="text-sm font-medium tracking-widest uppercase text-slate-400 hover:text-white transition-colors">{translations[lang as keyof typeof translations].navPricing}</Link>
-            <Link to="/#contatti" className="text-sm font-medium tracking-widest uppercase text-slate-400 hover:text-white transition-colors">{translations[lang as keyof typeof translations].navContact}</Link>
+            <div className="relative group cursor-pointer z-50">
+              <div className="flex items-center gap-1 text-sm font-semibold tracking-wider uppercase text-slate-400 hover:text-white transition-colors py-2">
+                {translations[lang as keyof typeof translations].navServices}
+                <ChevronDown className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180" />
+              </div>
+              <div className="absolute top-full left-0 mt-2 w-48 bg-black/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 overflow-hidden">
+                <Link to="/services" className="block px-6 py-4 text-sm font-medium tracking-wider text-slate-300 hover:text-[#00E5FF] hover:bg-white/5 transition-all uppercase border-b border-white/5">
+                  {translations[lang as keyof typeof translations].navServices}
+                </Link>
+                <Link to="/packages" className="block px-6 py-4 text-sm font-medium tracking-wider text-slate-300 hover:text-[#00E5FF] hover:bg-white/5 transition-all uppercase border-b border-white/5">
+                  {translations[lang as keyof typeof translations].navPackages || "I Nostri Pacchetti"}
+                </Link>
+                <Link to="/marketing" className="block px-6 py-4 text-sm font-medium tracking-wider text-slate-300 hover:text-[#00E5FF] hover:bg-white/5 transition-all uppercase border-b border-white/5">
+                  {translations[lang as keyof typeof translations].navMarketing}
+                </Link>
+                <Link to="/portfolio" className="block px-6 py-4 text-sm font-medium tracking-wider text-slate-300 hover:text-[#00E5FF] hover:bg-white/5 transition-all uppercase">
+                  Portfolio Demo
+                </Link>
+              </div>
+            </div>
+            
+            <Link to="/pricing" className="text-sm font-semibold tracking-wider uppercase text-slate-400 hover:text-white transition-colors">{translations[lang as keyof typeof translations].navPricing}</Link>
+            <Link to="/#contatti" className="text-sm font-semibold tracking-wider uppercase text-slate-400 hover:text-white transition-colors">{translations[lang as keyof typeof translations].navContact}</Link>
             
             <div className="relative group cursor-pointer">
               <div className="flex items-center gap-1 text-sm font-medium tracking-widest uppercase text-slate-400 hover:text-white transition-colors">
                 {lang} <ChevronDown className="w-4 h-4" />
               </div>
               <div className="absolute top-full right-0 mt-2 w-24 bg-black/80 backdrop-blur-xl border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                {['IT', 'EN', 'FR'].map((l) => (
+                {['IT', 'EN', 'FR', 'AR'].map((l) => (
                   <button key={l} onClick={() => setLang(l)} className="block w-full text-left px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/5 first:rounded-t-lg last:rounded-b-lg">
                     {l}
                   </button>
@@ -209,7 +274,7 @@ function AppContent() {
             </Tooltip>
 
             <Tooltip content="Scopri i pacchetti">
-              <Link to="/pricing" className="btn-primary px-6 py-3 rounded-full font-bold text-sm tracking-widest uppercase hover:scale-105 transition-all flex items-center gap-2">
+              <Link to="/pricing" className="btn-primary px-6 py-3 rounded-full font-semibold text-sm tracking-wider uppercase hover:scale-105 transition-all flex items-center gap-2">
                 <WhatsAppIcon className="w-4 h-4" />
                 Inizia Ora
               </Link>
@@ -234,18 +299,39 @@ function AppContent() {
         {/* Mobile Nav */}
         {isMobileMenuOpen && (
           <div className="md:hidden absolute top-full left-0 w-full bg-black/95 backdrop-blur-xl border-b border-white/5 p-6 flex flex-col gap-6">
-            <Link to="/#servizi" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium tracking-widest uppercase text-slate-300">{translations[lang as keyof typeof translations].navServices}</Link>
-            <Link to="/#marketing" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium tracking-widest uppercase text-slate-300">{translations[lang as keyof typeof translations].navMarketing}</Link>
-            <Link to="/pricing" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium tracking-widest uppercase text-slate-300">{translations[lang as keyof typeof translations].navPricing}</Link>
-            <Link to="/#contatti" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-medium tracking-widest uppercase text-slate-300">{translations[lang as keyof typeof translations].navContact}</Link>
+            <div className="flex flex-col gap-3">
+              <button 
+                onClick={() => setIsMobileServiziOpen(!isMobileServiziOpen)}
+                className="flex items-center justify-between text-xs font-bold tracking-[0.2em] uppercase text-[#00E5FF] w-full text-left"
+              >
+                {translations[lang as keyof typeof translations].navServices}
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isMobileServiziOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {isMobileServiziOpen && (
+                <motion.div 
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="flex flex-col gap-4 pl-4 py-2 border-l border-[#00E5FF]/20 overflow-hidden"
+                >
+                  <Link to="/services" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-semibold tracking-wider uppercase text-slate-300 hover:text-white transition-colors">{translations[lang as keyof typeof translations].navServices}</Link>
+                  <Link to="/packages" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-semibold tracking-wider uppercase text-slate-300 hover:text-white transition-colors">{translations[lang as keyof typeof translations].navPackages || "I Nostri Pacchetti"}</Link>
+                  <Link to="/marketing" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-semibold tracking-wider uppercase text-slate-300 hover:text-white transition-colors">{translations[lang as keyof typeof translations].navMarketing}</Link>
+                  <Link to="/portfolio" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-semibold tracking-wider uppercase text-slate-300 hover:text-white transition-colors">{translations[lang as keyof typeof translations].footerPortfolio || "Portfolio"}</Link>
+                </motion.div>
+              )}
+            </div>
+            
+            <Link to="/pricing" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-semibold tracking-wider uppercase text-slate-300">{translations[lang as keyof typeof translations].navPricing}</Link>
+            <Link to="/#contatti" onClick={() => setIsMobileMenuOpen(false)} className="text-sm font-semibold tracking-wider uppercase text-slate-300">{translations[lang as keyof typeof translations].navContact}</Link>
             <div className="flex gap-4">
-              {['IT', 'EN', 'FR'].map((l) => (
-                <button key={l} onClick={() => { setLang(l); setIsMobileMenuOpen(false); }} className={`text-sm font-medium tracking-widest uppercase ${lang === l ? 'text-[#00E5FF]' : 'text-slate-500'}`}>
+              {['IT', 'EN', 'FR', 'AR'].map((l) => (
+                <button key={l} onClick={() => { setLang(l); setIsMobileMenuOpen(false); }} className={`text-sm font-semibold tracking-wider uppercase ${lang === l ? 'text-[#00E5FF]' : 'text-slate-500'}`}>
                   {l}
                 </button>
               ))}
             </div>
-            <Link to="/pricing" onClick={() => setIsMobileMenuOpen(false)} className="bg-gradient-to-r from-[#00E5FF] to-[#00B4D8] text-[#0B1120] px-6 py-3 rounded-full font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-2">
+            <Link to="/pricing" onClick={() => setIsMobileMenuOpen(false)} className="bg-gradient-to-r from-[#00E5FF] to-[#00B4D8] text-[#0B1120] px-6 py-3 rounded-full font-semibold text-sm tracking-wider uppercase flex items-center justify-center gap-2">
               <WhatsAppIcon className="w-4 h-4" />
               {translations[lang as keyof typeof translations].heroBtn1}
             </Link>
@@ -255,8 +341,25 @@ function AppContent() {
       )}
 
       <main className="relative z-10" style={{ perspective: '1200px' }}>
-        <Routes>
-          <Route path="/" element={
+        <AnimatePresence mode="wait">
+          <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center"><GlobalLoader /></div>}>
+          <Routes location={location} key={location.pathname}>
+            <Route path="/book" element={
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <BookingPage lang={lang} />
+              </motion.div>
+            } />
+            <Route path="/marketing" element={
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <MarketingPage lang={lang} />
+              </motion.div>
+            } />
+            <Route path="/services" element={
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <ServicesPage lang={lang} />
+              </motion.div>
+            } />
+            <Route path="/" element={
             <motion.div
               initial="initial"
               animate="animate"
@@ -293,11 +396,11 @@ function AppContent() {
               </p>
 
               <div className="flex flex-wrap items-center gap-6">
-                <Link to="/pricing" className="bg-gradient-to-r from-[#00E5FF] to-[#00B4D8] text-black px-8 py-4 rounded-full font-bold text-sm tracking-widest uppercase hover:scale-105 transition-transform ambient-shadow-cyan flex items-center gap-2">
+                <Link to="/pricing" className="bg-gradient-to-r from-[#00E5FF] to-[#00B4D8] text-black px-8 py-4 rounded-full font-semibold text-sm tracking-wider uppercase hover:scale-105 transition-transform ambient-shadow-cyan flex items-center gap-2">
                   {translations[lang as keyof typeof translations].heroBtn1}
                   <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link to="/#servizi" className="text-sm font-medium tracking-widest uppercase text-slate-300 hover:text-white transition-colors flex items-center gap-2">
+                <Link to="/services" className="text-sm font-semibold tracking-wider uppercase text-slate-300 hover:text-white transition-colors flex items-center gap-2">
                   {translations[lang as keyof typeof translations].heroBtn2}
                 </Link>
               </div>
@@ -312,7 +415,9 @@ function AppContent() {
             >
               <div className="aspect-square relative flex items-center justify-center">
                 <div className="w-full h-full relative z-10">
-                  <Dodo3D />
+                  <React.Suspense fallback={<div className="w-full h-full border border-white/5 bg-white/5 rounded-3xl flex items-center justify-center text-sm text-slate-500 uppercase tracking-widest animate-pulse">Loading 3D...</div>}>
+                    <Dodo3D />
+                  </React.Suspense>
                 </div>
               </div>
             </motion.div>
@@ -329,61 +434,79 @@ function AppContent() {
             className="max-w-7xl mx-auto"
           >
             <div className="mb-20 md:w-2/3">
-              <h2 className="font-display text-4xl md:text-6xl font-bold tracking-tighter mb-6">
-                {translations[lang as keyof typeof translations].serviziTitle1} <span className="text-gradient">{translations[lang as keyof typeof translations].serviziTitle2}</span>
-              </h2>
-              <p className="text-slate-400 text-lg font-light leading-relaxed">
-                {translations[lang as keyof typeof translations].serviziSubtitle}
-              </p>
+              <div className="overflow-hidden pb-4">
+                <motion.h2 
+                  initial={{ y: "120%", opacity: 0, rotate: 2 }}
+                  whileInView={{ y: 0, opacity: 1, rotate: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="font-display text-4xl md:text-6xl font-bold tracking-tighter mb-6"
+                >
+                  {translations[lang as keyof typeof translations].serviziTitle1} <span className="text-gradient">{translations[lang as keyof typeof translations].serviziTitle2}</span>
+                </motion.h2>
+              </div>
+              <div className="overflow-hidden">
+                <motion.p 
+                  initial={{ y: "150%", opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                  className="text-slate-400 text-lg font-light leading-relaxed"
+                >
+                  {translations[lang as keyof typeof translations].serviziSubtitle}
+                </motion.p>
+              </div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {/* Service 1 */}
+            <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-6">
+              {/* Service 1 - Big Bento Tile */}
               <motion.div 
                 {...luxuryStagger}
                 whileHover={{ y: -10, transition: { duration: 0.4, ease: "easeOut" } }}
-                className="glass-panel p-10 rounded-3xl relative group overflow-hidden"
+                className="md:col-span-2 md:row-span-2 glass-panel p-10 rounded-3xl relative group overflow-hidden flex flex-col justify-center"
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#00E5FF]/10 rounded-full blur-2xl -mr-10 -mt-10 transition-all group-hover:bg-[#00E5FF]/20" />
-                <div className="w-14 h-14 rounded-2xl bg-[#00E5FF]/10 flex items-center justify-center mb-8 relative transition-all duration-500 group-hover:bg-[#00E5FF]/20 group-hover:shadow-[0_0_30px_rgba(0,229,255,0.3)]">
+                <div className="absolute top-0 right-0 w-48 h-48 bg-[#00E5FF]/10 rounded-full blur-3xl -mr-10 -mt-10 transition-all group-hover:bg-[#00E5FF]/20" />
+                <div className="w-16 h-16 rounded-2xl bg-[#00E5FF]/10 flex items-center justify-center mb-8 relative transition-all duration-500 group-hover:bg-[#00E5FF]/30 group-hover:shadow-[0_0_30px_rgba(0,229,255,0.4)]">
                   <div className="absolute inset-0 rounded-2xl border border-[#00E5FF]/20 group-hover:border-[#00E5FF]/50 group-hover:animate-pulse transition-all duration-500" />
-                  <Code2 className="w-6 h-6 text-[#00E5FF] relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-[15deg] group-hover:drop-shadow-[0_0_8px_rgba(0,229,255,0.8)]" />
+                  <Code2 className="w-8 h-8 text-[#00E5FF] relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-[15deg] group-hover:drop-shadow-[0_0_8px_rgba(0,229,255,0.8)]" />
                 </div>
-                <h3 className="font-display text-2xl font-bold mb-4">{translations[lang as keyof typeof translations].servizi1Title}</h3>
-                <p className="text-slate-400 font-light leading-relaxed text-sm">
+                <h3 className="font-display text-3xl md:text-4xl font-bold mb-4">{translations[lang as keyof typeof translations].servizi1Title}</h3>
+                <p className="text-slate-400 font-light leading-relaxed text-base">
                   {translations[lang as keyof typeof translations].servizi1Desc}
                 </p>
               </motion.div>
 
-              {/* Service 2 */}
+              {/* Service 2 - Medium Tile Top Right */}
               <motion.div 
                 {...luxuryStagger}
                 whileHover={{ y: -10, transition: { duration: 0.4, ease: "easeOut" } }}
-                className="glass-panel p-10 rounded-3xl relative group overflow-hidden"
+                transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="md:col-span-2 md:row-span-1 glass-panel p-8 rounded-3xl relative group overflow-hidden"
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[#E9C349]/10 rounded-full blur-2xl -mr-10 -mt-10 transition-all group-hover:bg-[#E9C349]/20" />
-                <div className="w-14 h-14 rounded-2xl bg-[#E9C349]/10 flex items-center justify-center mb-8 relative transition-all duration-500 group-hover:bg-[#E9C349]/20 group-hover:shadow-[0_0_30px_rgba(233,195,73,0.3)]">
+                <div className="w-12 h-12 rounded-2xl bg-[#E9C349]/10 flex items-center justify-center mb-6 relative transition-all duration-500 group-hover:bg-[#E9C349]/20 group-hover:shadow-[0_0_30px_rgba(233,195,73,0.3)]">
                   <div className="absolute inset-0 rounded-2xl border border-[#E9C349]/20 group-hover:border-[#E9C349]/50 group-hover:animate-pulse transition-all duration-500" />
-                  <Bot className="w-6 h-6 text-[#E9C349] relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:-rotate-[15deg] group-hover:drop-shadow-[0_0_8px_rgba(233,195,73,0.8)]" />
+                  <Bot className="w-5 h-5 text-[#E9C349] relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:-rotate-[15deg] group-hover:drop-shadow-[0_0_8px_rgba(233,195,73,0.8)]" />
                 </div>
-                <h3 className="font-display text-2xl font-bold mb-4">{translations[lang as keyof typeof translations].servizi2Title}</h3>
+                <h3 className="font-display text-2xl font-bold mb-3">{translations[lang as keyof typeof translations].servizi2Title}</h3>
                 <p className="text-slate-400 font-light leading-relaxed text-sm">
                   {translations[lang as keyof typeof translations].servizi2Desc}
                 </p>
               </motion.div>
 
-              {/* Service 3 */}
+              {/* Service 3 - Medium Tile Bottom Right */}
               <motion.div 
                 {...luxuryStagger}
                 whileHover={{ y: -10, transition: { duration: 0.4, ease: "easeOut" } }}
-                className="glass-panel p-10 rounded-3xl relative group overflow-hidden"
+                transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="md:col-span-2 md:row-span-1 glass-panel p-8 rounded-3xl relative group overflow-hidden"
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl -mr-10 -mt-10 transition-all group-hover:bg-purple-500/20" />
-                <div className="w-14 h-14 rounded-2xl bg-purple-500/10 flex items-center justify-center mb-8 relative transition-all duration-500 group-hover:bg-purple-500/20 group-hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]">
+                <div className="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center mb-6 relative transition-all duration-500 group-hover:bg-purple-500/20 group-hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]">
                   <div className="absolute inset-0 rounded-2xl border border-purple-500/20 group-hover:border-purple-500/50 group-hover:animate-pulse transition-all duration-500" />
-                  <Store className="w-6 h-6 text-purple-400 relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-[15deg] group-hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+                  <Store className="w-5 h-5 text-purple-400 relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-[15deg] group-hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
                 </div>
-                <h3 className="font-display text-2xl font-bold mb-4">{translations[lang as keyof typeof translations].servizi3Title}</h3>
+                <h3 className="font-display text-2xl font-bold mb-3">{translations[lang as keyof typeof translations].servizi3Title}</h3>
                 <p className="text-slate-400 font-light leading-relaxed text-sm">
                   {translations[lang as keyof typeof translations].servizi3Desc}
                 </p>
@@ -466,7 +589,9 @@ function AppContent() {
 
         {/* Pricing Section */}
         <section id="pricing" className="py-20 px-6 relative overflow-hidden z-10">
-          <Rocket3D />
+          <React.Suspense fallback={<div className="absolute inset-0 flex items-center justify-center opacity-50"><div className="w-8 h-8 rounded-full border-2 border-t-[#E9C349] animate-spin"></div></div>}>
+            <Rocket3D />
+          </React.Suspense>
           <motion.div 
             initial={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
             whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
@@ -514,7 +639,7 @@ function AppContent() {
                       {pack.name}
                     </h3>
                     <div className="text-4xl font-bold font-display mb-8">
-                      <span className={isEvo ? 'text-white' : 'text-[#E9C349]'}>{pack.price}</span>
+                      <ScrambleNumber value={pack.price} duration={1500 + idx * 500} className={isEvo ? 'text-white' : 'text-[#E9C349]'} />
                     </div>
                     <ul className="space-y-4 mb-10 flex-grow">
                       {pack.features.map((feature, i) => (
@@ -524,7 +649,7 @@ function AppContent() {
                         </li>
                       ))}
                     </ul>
-                    <Link to="/pricing" className={`w-full py-4 rounded-xl font-bold text-sm tracking-widest uppercase transition-all text-center block ${
+                    <Link to="/pricing" className={`w-full py-4 rounded-xl font-semibold text-sm tracking-wider uppercase transition-all text-center block ${
                       isEvo 
                         ? 'bg-gradient-to-r from-[#00E5FF] to-[#00B4D8] text-black hover:scale-105' 
                         : isCustom
@@ -539,7 +664,7 @@ function AppContent() {
             </div>
 
             <div className="mt-16 text-center">
-              <Link to="/pricing" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors font-bold tracking-widest uppercase text-sm">
+              <Link to="/pricing" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors font-semibold tracking-wider uppercase text-sm">
                 {translations[lang as keyof typeof translations].seeAllPricing || "Scopri tutti i dettagli"}
                 <ArrowRight className="w-4 h-4" />
               </Link>
@@ -679,15 +804,19 @@ function AppContent() {
                     </label>
                   </div>
 
+                  <div className="mb-6">
+                    <input type="text" name="_honeypot" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+                  </div>
+
                   <Tooltip content="Invia la tua richiesta ora">
-                    <button disabled={isSubmitting} className="w-full py-5 btn-epic font-bold text-base tracking-widest uppercase disabled:opacity-70 flex items-center justify-center gap-2">
+                    <button disabled={isSubmitting} className="w-full py-6 btn-epic font-bold text-lg tracking-wider uppercase antialiased disabled:opacity-70 flex items-center justify-center gap-3">
                       <div className="shine-layer"></div>
                       {isSubmitting ? (
-                        <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin relative z-10" />
+                        <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin relative z-10" />
                       ) : (
                         <span className="relative z-10 flex items-center gap-2">
                           {translations[lang as keyof typeof translations].contactFormSubmit}
-                          <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                          <ArrowRight className="w-6 h-6 ml-2 group-hover:translate-x-1 transition-transform" />
                         </span>
                       )}
                     </button>
@@ -783,13 +912,20 @@ function AppContent() {
         </section>
             </motion.div>
           } />
-          <Route path="/pricing" element={<Pricing lang={lang} />} />
-        <Route path="/checkout/:planId" element={<Checkout lang={lang} />} />
-        <Route path="/terms" element={<Terms lang={lang} />} />
-        <Route path="/privacy" element={<Privacy lang={lang} />} />
-        <Route path="/legal" element={<Legal lang={lang} />} />
-        <Route path="/links" element={<Linktree lang={lang} />} />
+          <Route path="/pricing" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><Pricing lang={lang} /></motion.div>} />
+          <Route path="/packages" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><PackagesPage lang={lang} /></motion.div>} />
+          <Route path="/portfolio" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><PortfolioPage lang={lang} /></motion.div>} />
+          <Route path="/portfolio/lumina" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><LuminaDetail lang={lang} /></motion.div>} />
+          <Route path="/portfolio/nexus" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><NexusDetail lang={lang} /></motion.div>} />
+          <Route path="/checkout/:planId" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><Checkout lang={lang} /></motion.div>} />
+        <Route path="/terms" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><Terms lang={lang} /></motion.div>} />
+        <Route path="/privacy" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><Privacy lang={lang} /></motion.div>} />
+        <Route path="/legal" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><Legal lang={lang} /></motion.div>} />
+        <Route path="/links" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><Linktree lang={lang} /></motion.div>} />
+        <Route path="*" element={<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><NotFound lang={lang} /></motion.div>} />
       </Routes>
+      </React.Suspense>
+      </AnimatePresence>
       </main>
 
       {/* Footer */}
@@ -818,8 +954,10 @@ function AppContent() {
           <div className="space-y-4">
             <h4 className="font-display font-bold tracking-widest uppercase text-sm text-white mb-4">{translations[lang as keyof typeof translations].footerUsefulLinks}</h4>
             <ul className="space-y-3">
-              <li><Link to="/#servizi" className="text-slate-400 hover:text-white text-sm transition-colors">{translations[lang as keyof typeof translations].navServices}</Link></li>
-              <li><Link to="/#marketing" className="text-slate-400 hover:text-white text-sm transition-colors">{translations[lang as keyof typeof translations].navMarketing}</Link></li>
+              <li><Link to="/services" className="text-slate-400 hover:text-white text-sm transition-colors">{translations[lang as keyof typeof translations].navServices}</Link></li>
+              <li><Link to="/packages" className="text-slate-400 hover:text-white text-sm transition-colors">{translations[lang as keyof typeof translations].navPackages || "Pacchetti"}</Link></li>
+              <li><Link to="/portfolio" className="text-slate-400 hover:text-white text-sm transition-colors">{translations[lang as keyof typeof translations].footerPortfolio || "Portfolio"}</Link></li>
+              <li><Link to="/marketing" className="text-slate-400 hover:text-white text-sm transition-colors">{translations[lang as keyof typeof translations].navMarketing}</Link></li>
               <li><Link to="/pricing" className="text-slate-400 hover:text-white text-sm transition-colors">{translations[lang as keyof typeof translations].navPricing}</Link></li>
               <li><Link to="/pricing#affiliate" className="text-slate-400 hover:text-white text-sm transition-colors">{lang === 'IT' ? 'Diventa Affiliato' : lang === 'FR' ? 'Devenir Affilié' : 'Become an Affiliate'}</Link></li>
               <li><Link to="/#contatti" className="text-slate-400 hover:text-white text-sm transition-colors">{translations[lang as keyof typeof translations].navContact}</Link></li>

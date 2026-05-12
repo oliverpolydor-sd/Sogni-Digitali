@@ -72,16 +72,20 @@ export default function CustomCursor() {
   }, [isVisible, cursorX, cursorY]);
 
   // Hide entirely on devices that don't support fine pointers
-  if (!isVisible && typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(pointer: fine)').matches) {
+  if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(pointer: coarse) or (hover: none)').matches) {
+    // Make sure default cursor is enabled on touch devices
+    if (typeof document !== 'undefined') {
+      document.body.style.cursor = 'auto';
+    }
     return null;
   }
 
-  if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+  if (!isVisible) {
     return null;
   }
 
   return (
-    <>
+    <div className="hidden md:block">
       {/* Follower (Fast Spring Ring) */}
       <motion.div
         className="fixed top-0 left-0 w-12 h-12 pointer-events-none z-[9998] flex items-center justify-center mix-blend-screen"
@@ -122,6 +126,6 @@ export default function CustomCursor() {
           <path d="M2 2L9.5 22L12.5 12.5L22 9.5L2 2Z" fill="#00E5FF" stroke="#FFFFFF" strokeWidth="1.5" strokeLinejoin="round"/>
         </svg>
       </motion.div>
-    </>
+    </div>
   );
 }

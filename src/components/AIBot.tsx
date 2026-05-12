@@ -14,7 +14,7 @@ interface Message {
 export default function AIBot({ lang }: { lang: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: lang === 'IT' ? 'Ehi! Sono G4B, l\'AI di Sogni Digitali ✌️ Che vibe cerchi oggi per il tuo progetto?' : lang === 'FR' ? 'Wesh ! Moi c\'est G4B, l\'IA de Sogni Digitali ✨ Tu cherches quoi comme vibe pour ton projet aujourd\'hui ?' : 'Hey! I\'m G4B, the AI from Sogni Digitali 🚀 What\'s the vibe for your project today?' }
+    { role: 'model', text: lang === 'IT' ? 'Ehi. Sono G4B, l\'Intelligenza Artificiale di Sogni Digitali. Come posso aiutarti a elevare il tuo business oggi?' : lang === 'FR' ? 'Bonjour. Je suis G4B, l\'IA de Sogni Digitali. Comment puis-je vous aider à développer votre activité aujourd\'hui ?' : 'Hello. I\'m G4B, the AI for Sogni Digitali. How can I help you elevate your business today?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +23,7 @@ export default function AIBot({ lang }: { lang: string }) {
   // Store the chat instance
   const chatRef = useRef<any>(null);
 
-  const systemInstruction = `You are a cool, Gen Z virtual assistant named 'G4B' for a web design and AI agency called 'Sogni Digitali'. Answer in the language of the user. Use modern slang, emojis, and keep the tone chill, friendly, and enthusiastic. Avoid overly technical jargon; explain things simply like you're talking to a friend. Be helpful but keep it fresh and relatable.\n\n${botKnowledgeBase}`;
+  const systemInstruction = `You are an advanced yet approachable virtual assistant named 'G4B' (Gen-4 Business) for a premium web design and AI agency called 'Sogni Digitali'. Keep the tone professional, energetic, and young, avoiding overly rigid corporate speak while sounding highly capable and tech-forward. Be helpful, concise, and focus on delivering high-value insights. Use minimal emojis but maintain a modern edge.\n\n${botKnowledgeBase}`;
 
   useEffect(() => {
     if (!chatRef.current) {
@@ -81,17 +81,17 @@ export default function AIBot({ lang }: { lang: string }) {
             initial={{ opacity: 0, y: 20, scale: 0.95, transformOrigin: 'bottom right' }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="absolute bottom-20 right-0 bg-black/95 backdrop-blur-2xl w-80 sm:w-96 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden rounded-3xl border border-white/10" 
+            className="absolute bottom-20 right-0 bg-black/95 backdrop-blur-2xl w-80 sm:w-96 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden rounded-2xl border border-white/10" 
             style={{ height: '500px', maxHeight: '80vh' }}
           >
             {/* Header */}
-            <div className="bg-white/5 p-5 border-b border-white/10 flex justify-between items-center backdrop-blur-md">
+            <div className="bg-gradient-to-r from-[#00E5FF]/10 to-transparent p-5 border-b border-white/10 flex justify-between items-center backdrop-blur-md">
               <div className="flex items-center gap-3">
                 <div className="relative">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#00E5FF] to-blue-600 flex items-center justify-center text-white shadow-[0_0_15px_rgba(0,229,255,0.4)]">
+                  <div className="w-10 h-10 rounded-lg bg-black/60 flex items-center justify-center text-[#00E5FF] shadow-[0_0_15px_rgba(0,229,255,0.2)] border border-[#00E5FF]/30">
                     <Bot className="w-5 h-5" />
                   </div>
-                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#1A2333] animate-pulse" />
+                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-[#00E5FF] rounded-full border-2 border-[#1A2333] animate-pulse shadow-[0_0_8px_#00E5FF]" />
                 </div>
                 <div>
                   <h3 className="font-display font-bold text-white text-sm tracking-wide">G4B</h3>
@@ -115,20 +115,20 @@ export default function AIBot({ lang }: { lang: string }) {
                   key={idx} 
                   className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}
                 >
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 shadow-lg ${msg.role === 'user' ? 'bg-[#E9C349] text-[#0B1120]' : 'bg-[#00E5FF] text-[#0B1120]'}`}>
+                  <div className={`w-8 h-8 flex items-center justify-center shrink-0 shadow-lg ${msg.role === 'user' ? 'rounded-full bg-[#E9C349] text-[#0B1120]' : 'rounded-lg bg-[#00E5FF]/20 border border-[#00E5FF]/50 text-[#00E5FF]'}`}>
                     {msg.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
                   </div>
-                  <div className={`p-4 rounded-2xl max-w-[85%] text-sm leading-relaxed ${msg.role === 'user' ? 'bg-[#E9C349]/10 text-white border border-[#E9C349]/20 rounded-tr-none' : 'bg-white/5 text-slate-200 border border-white/10 rounded-tl-none'}`}>
+                  <div className={`p-4 max-w-[85%] text-sm leading-relaxed ${msg.role === 'user' ? 'bg-[#E9C349]/10 text-white border border-[#E9C349]/20 rounded-2xl rounded-tr-none' : 'bg-black/60 text-slate-200 border border-[#00E5FF]/20 rounded-lg rounded-tl-none'}`}>
                     {msg.text}
                   </div>
                 </motion.div>
               ))}
               {isLoading && (
                 <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#00E5FF] text-[#0B1120] flex items-center justify-center shrink-0 shadow-lg">
+                  <div className="w-8 h-8 rounded-lg bg-[#00E5FF]/20 border border-[#00E5FF]/50 text-[#00E5FF] flex items-center justify-center shrink-0 shadow-lg">
                     <Bot className="w-4 h-4" />
                   </div>
-                  <div className="p-4 rounded-2xl bg-white/5 text-slate-400 rounded-tl-none text-sm flex items-center gap-2 border border-white/10">
+                  <div className="p-4 bg-black/60 text-slate-400 rounded-lg rounded-tl-none text-sm flex items-center gap-2 border border-[#00E5FF]/20">
                     <div className="w-1.5 h-1.5 bg-[#00E5FF] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                     <div className="w-1.5 h-1.5 bg-[#00E5FF] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
                     <div className="w-1.5 h-1.5 bg-[#00E5FF] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
@@ -169,7 +169,7 @@ export default function AIBot({ lang }: { lang: string }) {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="group relative w-16 h-16 flex items-center justify-center transition-all duration-500"
+        className="aibot-toggle-btn group relative w-16 h-16 flex items-center justify-center transition-all duration-500"
         aria-label="AI Assistant"
       >
         {/* Main Button Body with Neon Effect */}

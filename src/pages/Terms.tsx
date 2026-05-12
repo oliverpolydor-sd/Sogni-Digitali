@@ -8,62 +8,46 @@ export default function Terms({ lang }: { lang: string }) {
 
   const content = {
     IT: {
-      title: "Termini e Condizioni",
-      lastUpdated: "Ultimo aggiornamento: Marzo 2026",
+      title: "Termini e Condizioni (CGV)",
+      lastUpdated: "Ultimo aggiornamento: Aprile 2026",
       sections: [
         {
-          title: "1. Accettazione dei Termini",
-          text: "Accedendo e utilizzando i servizi di Sogni Digitali, accetti di essere vincolato dai presenti Termini e Condizioni. Se non accetti questi termini, ti preghiamo di non utilizzare i nostri servizi."
+          title: "1. Oggetto",
+          text: "Le presenti CGV regolano i rapporti contrattuali tra Sogni Digitali di Desire Laval Oliver Polydor e il Cliente per i servizi di web design e IA."
         },
         {
-          title: "2. Servizi Offerti",
-          text: "Sogni Digitali fornisce servizi di web design, sviluppo software, integrazione di intelligenza artificiale e marketing digitale. I dettagli specifici dei servizi, inclusi i costi e le tempistiche, saranno definiti in un contratto separato o in un preventivo approvato."
+          title: "2. Proprietà e Trasferimento",
+          text: "Sogni Digitali conserva la proprietà delle creazioni fino al saldo completo. Una volta saldato, viene rilasciata una Licenza di Proprietà al Cliente."
         },
         {
-          title: "3. Pagamenti e Fatturazione",
-          text: "I pagamenti per i servizi devono essere effettuati secondo le scadenze concordate. Ci riserviamo il diritto di sospendere i servizi in caso di mancato pagamento. Tutti i prezzi indicati sono al netto dell'IVA, ove applicabile."
+          title: "3. Pagamenti (Kill-Switch)",
+          text: "In caso di mancato pagamento, Sogni Digitali sospenderà immediatamente l'accesso ai sistemi e la consegna delle chiavi amministrative."
         },
         {
-          title: "4. Proprietà Intellettuale",
-          text: "Tutto il codice, il design e i contenuti creati da Sogni Digitali rimangono di nostra proprietà fino al saldo completo del pagamento. Una volta saldato, i diritti di utilizzo vengono trasferiti al cliente, salvo diversamente concordato."
-        },
-        {
-          title: "5. Limitazione di Responsabilità",
-          text: "Sogni Digitali non sarà responsabile per danni indiretti, incidentali o consequenziali derivanti dall'uso dei nostri servizi. La nostra responsabilità totale non supererà l'importo pagato per il servizio in questione."
-        },
-        {
-          title: "6. Modifiche ai Termini",
-          text: "Ci riserviamo il diritto di modificare questi termini in qualsiasi momento. Le modifiche saranno effettive immediatamente dopo la pubblicazione sul nostro sito web."
+          title: "4. Limitazione Responsabilità IA",
+          text: "L'IA è una tecnologia probabilistica. Sogni Digitali non garantisce l'assenza totale di errori (hallucinations) e il Cliente è responsabile della supervisione delle risposte."
         }
       ]
     },
     FR: {
-      title: "Termes et Conditions",
-      lastUpdated: "Dernière mise à jour : Mars 2026",
+      title: "Conditions Générales de Vente (CGV)",
+      lastUpdated: "Dernière mise à jour : Avril 2026",
       sections: [
         {
-          title: "1. Acceptation des Termes",
-          text: "En accédant et en utilisant les services de Sogni Digitali, vous acceptez d'être lié par les présents Termes et Conditions. Si vous n'acceptez pas ces termes, veuillez ne pas utiliser nos services."
+          title: "1. Objet",
+          text: "Les présentes CGV régissent les relations contractuelles entre Sogni Digitali di Desire Laval Oliver Polydor et le Client pour les services web et IA."
         },
         {
-          title: "2. Services Fournis",
-          text: "Sogni Digitali fournit des services de conception web, de développement de logiciels, d'intégration d'intelligence artificielle et de marketing numérique. Les détails spécifiques des services, y compris les coûts et les délais, seront définis dans un contrat séparé ou un devis approuvé."
+          title: "2. Propriété et Transfert",
+          text: "Sogni Digitali conserve la propriété des créations jusqu'au paiement intégral. Une fois soldé, une Licence de Propriété est délivrée au Client."
         },
         {
-          title: "3. Paiements et Facturation",
-          text: "Les paiements pour les services doivent être effectués selon les échéances convenues. Nous nous réservons le droit de suspendre les services en cas de non-paiement. Tous les prix indiqués s'entendent hors TVA, le cas échéant."
+          title: "3. Paiements (Kill-Switch)",
+          text: "En cas de défaut de paiement, Sogni Digitali suspendra immédiatement l'accès aux systèmes et la remise des clés d'administration."
         },
         {
-          title: "4. Propriété Intellectuelle",
-          text: "Tout le code, le design et le contenu créés par Sogni Digitali restent notre propriété jusqu'au paiement intégral. Une fois payé, les droits d'utilisation sont transférés au client, sauf accord contraire."
-        },
-        {
-          title: "5. Limitation de Responsabilité",
-          text: "Sogni Digitali ne sera pas responsable des dommages indirects, accessoires ou consécutifs découlant de l'utilisation de nos services. Notre responsabilité totale ne dépassera pas le montant payé pour le service en question."
-        },
-        {
-          title: "6. Modifications des Termes",
-          text: "Nous nous réservons le droit de modifier ces termes à tout moment. Les modifications prendront effet immédiatement après leur publication sur notre site web."
+          title: "4. Limitation Responsabilité IA",
+          text: "L'IA est une technologie probabiliste. Sogni Digitali ne garantit pas l'absence totale d'erreurs (hallucinations). Le Client est responsable de la supervision."
         }
       ]
     },

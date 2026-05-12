@@ -30,11 +30,23 @@ export default function CookieBanner({ lang }: { lang: string }) {
     }
   }, []);
 
+  const updateGtagConsent = (analytics: boolean, marketing: boolean) => {
+    if (typeof window !== 'undefined' && 'gtag' in window) {
+      (window as any).gtag('consent', 'update', {
+        'analytics_storage': analytics ? 'granted' : 'denied',
+        'ad_storage': marketing ? 'granted' : 'denied',
+        'ad_user_data': marketing ? 'granted' : 'denied',
+        'ad_personalization': marketing ? 'granted' : 'denied'
+      });
+    }
+  };
+
   const handleAcceptAll = () => {
     localStorage.setItem('sogni_digitali_cookie_consent', 'accepted_all');
     if (window.SOGNI_HUB_CONFIG) {
       window.SOGNI_HUB_CONFIG.collectCookies = true;
     }
+    updateGtagConsent(true, true);
     setIsVisible(false);
   };
 
@@ -47,6 +59,7 @@ export default function CookieBanner({ lang }: { lang: string }) {
       // Allow tracker if they accepted either marketing or analytics
       window.SOGNI_HUB_CONFIG.collectCookies = cookies.marketing || cookies.analytics;
     }
+    updateGtagConsent(cookies.analytics, cookies.marketing);
     setIsVisible(false);
   };
 
@@ -55,6 +68,7 @@ export default function CookieBanner({ lang }: { lang: string }) {
     if (window.SOGNI_HUB_CONFIG) {
       window.SOGNI_HUB_CONFIG.collectCookies = false;
     }
+    updateGtagConsent(false, false);
     setIsVisible(false);
   };
 

@@ -13,15 +13,15 @@ export default function Legal({ lang }: { lang: string }) {
       sections: [
         {
           title: "Informazioni Aziendali",
-          text: "Sogni Digitali S.r.l.\nSede legale: Via Roma 1, 00100 Roma, Italia\nPartita IVA: IT12345678901\nEmail: info@sognidigitali.com\nTelefono: +39 06 1234567"
+          text: "Sogni Digitali di Desire Laval Oliver Polydor\nSede legale: Torino, Piemonte, Italia\nPartita IVA: IT13347550017\nEmail: hello@sognidigitali.com\nTelefono: +39 375 588 0609\n\nOperazione in franchise di IVA (Regime Forfettario)."
         },
         {
           title: "Rappresentante Legale",
-          text: "Direttore responsabile o CEO: [Il Tuo Nome Qui]"
+          text: "Directeur de la publication: Désiré Laval Oliver Polydor"
         },
         {
           title: "Hosting",
-          text: "Questo sito web è ospitato su Google Cloud / Vercel.\nIndirizzo Host: [Indirizzo dell'host]."
+          text: "Questo sito web è ospitato da Hostinger International Ltd.\nIndirizzo Host: 61 Lordou Vironos Street, 6023 Larnaca, Cipro."
         },
         {
           title: "Diritti d'Autore",
@@ -35,15 +35,15 @@ export default function Legal({ lang }: { lang: string }) {
       sections: [
         {
           title: "Informations sur l'Entreprise",
-          text: "Sogni Digitali SARL (ou SAS)\nSiège social : [Votre Adresse], [Ville], [Pays]\nNuméro SIRET / Numéro de TVA: FR12345678901\nEmail : info@sognidigitali.com\nTéléphone : +33 1 23 45 67 89"
+          text: "Sogni Digitali di Desire Laval Oliver Polydor\nSiège social : Turin, Piémont, Italie\nNuméro de TVA: IT13347550017\nEmail : hello@sognidigitali.com\nTéléphone : +39 375 588 0609\n\nOpération en franchise de TVA (Regime Forfettario)."
         },
         {
           title: "Directeur de la publication",
-          text: "Directeur de publication : [Votre Nom]"
+          text: "Directeur de publication : Désiré Laval Oliver Polydor"
         },
         {
           title: "Hébergement",
-          text: "Ce site internet est hébergé par Vercel Inc. / Google Cloud.\nAdresse de l'hébergeur : [Adresse de l'hébergeur, ex: 340 S Lemon Ave #4133 Walnut, CA 91789, USA]."
+          text: "Ce site internet est hébergé par Hostinger International Ltd.\nAdresse de l'hébergeur : 61 Lordou Vironos Street, 6023 Larnaca, Chypre."
         },
         {
           title: "Propriété Intellectuelle",
