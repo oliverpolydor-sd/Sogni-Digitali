@@ -1,9 +1,26 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useInView } from 'motion/react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { PresentationControls, ContactShadows, Float, MeshDistortMaterial, Html, RoundedBox } from '@react-three/drei';
 import * as THREE from 'three';
 import { Smartphone, CheckCircle, Database } from 'lucide-react';
+
+class ErrorBoundary extends React.Component<{children: React.ReactNode}, {hasError: boolean}> {
+  constructor(props: {children: React.ReactNode}) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() { return { hasError: true }; }
+  componentDidCatch(error: any) { console.error("WebGL Error in PhygitalSandbox:", error); }
+  render() {
+    if (this.state.hasError) return (
+      <div className="w-full h-full flex items-center justify-center text-slate-500 border border-white/5 bg-black/40 rounded-3xl pointer-events-none">
+        3D Preview Unavailable
+      </div>
+    );
+    return this.props.children;
+  }
+}
 
 function Card({ onClick }: { onClick: () => void }) {
   const groupRef = useRef<THREE.Group>(null);
@@ -62,6 +79,8 @@ function Card({ onClick }: { onClick: () => void }) {
 }
 
 export default function PhygitalSandbox() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "200px" });
   const [interactionState, setInteractionState] = useState<'idle' | 'transferring' | 'success'>('idle');
   const [fakeLead, setFakeLead] = useState<{name: string, email: string, source: string} | null>(null);
 
@@ -174,6 +193,7 @@ export default function PhygitalSandbox() {
 
         {/* 3D Canvas */}
         <div 
+          ref={containerRef}
           className="h-[600px] w-full rounded-3xl bg-black/40 border border-white/5 relative overflow-hidden group shadow-2xl"
         >
           <div className="absolute inset-x-0 bottom-6 flex justify-center opacity-70 transition-opacity z-10 pointer-events-none">
@@ -183,19 +203,23 @@ export default function PhygitalSandbox() {
             </div>
           </div>
           
-          <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
-            <ambientLight intensity={0.5} />
-            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1.5} />
-            <PresentationControls
-              global
-              rotation={[0.13, 0.1, 0]}
-              polar={[-0.4, 0.2]}
-              azimuth={[-1, 0.75]}
-            >
-              <Card onClick={handleInteract} />
-            </PresentationControls>
-            <ContactShadows position={[0, -2.5, 0]} opacity={0.7} scale={15} blur={2.5} far={4} color="#00E5FF" />
-          </Canvas>
+          {isInView && (
+            <ErrorBoundary>
+              <Canvas camera={{ position: [0, 0, 6], fov: 45 }} gl={{ powerPreference: "default", preserveDrawingBuffer: false }}>
+                <ambientLight intensity={0.5} />
+                <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1.5} />
+                <PresentationControls
+                  global
+                  rotation={[0.13, 0.1, 0]}
+                  polar={[-0.4, 0.2]}
+                  azimuth={[-1, 0.75]}
+                >
+                  <Card onClick={handleInteract} />
+                </PresentationControls>
+                <ContactShadows position={[0, -2.5, 0]} opacity={0.7} scale={15} blur={2.5} far={4} color="#00E5FF" />
+              </Canvas>
+            </ErrorBoundary>
+          )}
         </div>
 
       </div>

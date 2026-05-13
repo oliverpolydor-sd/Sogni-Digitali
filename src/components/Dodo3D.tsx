@@ -1,4 +1,5 @@
 import React, { Suspense, useRef, useMemo } from 'react';
+import { useInView } from 'motion/react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { 
   PresentationControls, 
@@ -475,40 +476,45 @@ function G4BModel({ imageUrl }: { imageUrl?: string }) {
 
 export default function Dodo3D({ imageUrl }: { imageUrl?: string }) {
   const [hovered, setHovered] = React.useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "200px" });
 
   return (
     <div 
+      ref={containerRef}
       className={`w-full h-full relative group ${hovered ? 'cursor-pointer' : 'cursor-grab active:cursor-grabbing'}`}
     >
-      <ErrorBoundary>
-        <Canvas
-          dpr={[1, 2]}
-          shadows={{ type: THREE.PCFShadowMap }}
-          camera={{ position: [0, 1, 10], fov: 40 }}
-          gl={{ antialias: true, alpha: true, preserveDrawingBuffer: true }}
-          onPointerOver={() => setHovered(true)}
-          onPointerOut={() => setHovered(false)}
-        >
-          <Suspense fallback={
-            <Html center>
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-12 h-12 border-4 border-[#00E5FF]/20 border-t-[#00E5FF] rounded-full animate-spin" />
-                <span className="text-[#00E5FF] font-display text-xs tracking-widest uppercase">Initializing Neural Link...</span>
-              </div>
-            </Html>
-          }>
-            <Environment preset="city" />
-            <ambientLight intensity={1.2} />
-            <directionalLight position={[10, 15, 10]} intensity={2.5} castShadow />
-            <directionalLight position={[-10, 5, -5]} intensity={1.5} color="#00E5FF" />
-            <G4BModel imageUrl={imageUrl} />
-            
-            {/* Ambient Glow */}
-            <pointLight position={[5, 5, 5]} intensity={2} color="#ffffff" />
-            <pointLight position={[-5, -5, -5]} intensity={1} color="#E9C349" />
-          </Suspense>
-        </Canvas>
-      </ErrorBoundary>
+      {isInView && (
+        <ErrorBoundary>
+          <Canvas
+            dpr={[1, 2]}
+            shadows={{ type: THREE.PCFShadowMap }}
+            camera={{ position: [0, 1, 10], fov: 40 }}
+            gl={{ antialias: true, alpha: true, preserveDrawingBuffer: false, powerPreference: "default" }}
+            onPointerOver={() => setHovered(true)}
+            onPointerOut={() => setHovered(false)}
+          >
+            <Suspense fallback={
+              <Html center>
+                <div className="flex flex-col items-center gap-4">
+                  <div className="w-12 h-12 border-4 border-[#00E5FF]/20 border-t-[#00E5FF] rounded-full animate-spin" />
+                  <span className="text-[#00E5FF] font-display text-xs tracking-widest uppercase">Initializing Neural Link...</span>
+                </div>
+              </Html>
+            }>
+              <Environment preset="city" />
+              <ambientLight intensity={1.2} />
+              <directionalLight position={[10, 15, 10]} intensity={2.5} castShadow />
+              <directionalLight position={[-10, 5, -5]} intensity={1.5} color="#00E5FF" />
+              <G4BModel imageUrl={imageUrl} />
+              
+              {/* Ambient Glow */}
+              <pointLight position={[5, 5, 5]} intensity={2} color="#ffffff" />
+              <pointLight position={[-5, -5, -5]} intensity={1} color="#E9C349" />
+            </Suspense>
+          </Canvas>
+        </ErrorBoundary>
+      )}
     </div>
   );
 }

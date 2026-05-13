@@ -2,6 +2,19 @@ import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
+class ErrorBoundary extends React.Component<{children: React.ReactNode}, {hasError: boolean}> {
+  constructor(props: {children: React.ReactNode}) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() { return { hasError: true }; }
+  componentDidCatch(error: any) { console.error("WebGL Error in SunBackground:", error); }
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
+
 const vertexShader = `
   varying vec2 vUv;
   varying vec3 vPosition;
@@ -185,9 +198,11 @@ function SunSphere() {
 export default function SunBackground() {
   return (
     <div className="fixed inset-0 z-[-1] pointer-events-none opacity-0 transition-opacity duration-1000 light-mode-sun">
-      <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
-        <SunSphere />
-      </Canvas>
+      <ErrorBoundary>
+        <Canvas camera={{ position: [0, 0, 10], fov: 45 }} gl={{ powerPreference: "default", preserveDrawingBuffer: false }}>
+          <SunSphere />
+        </Canvas>
+      </ErrorBoundary>
     </div>
   );
 }

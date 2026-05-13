@@ -67,6 +67,7 @@ const LuminaDetail = React.lazy(() => import("./pages/LuminaDetail"));
 const NexusDetail = React.lazy(() => import("./pages/NexusDetail"));
 const ServicesPage = React.lazy(() => import("./pages/Services"));
 const BookingPage = React.lazy(() => import("./pages/Booking"));
+const Affiliate = React.lazy(() => import("./pages/Affiliate"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 
 // Lazy loaded heavy 3D components
@@ -349,9 +350,16 @@ function AppContent() {
                     </Link>
                     <Link
                       to="/portfolio"
-                      className="block px-6 py-4 text-sm font-medium tracking-wider text-slate-300 hover:text-[#00E5FF] hover:bg-white/5 transition-all uppercase"
+                      className="block px-6 py-4 text-sm font-medium tracking-wider text-slate-300 hover:text-[#00E5FF] hover:bg-white/5 transition-all uppercase border-b border-white/5"
                     >
                       Portfolio Demo
+                    </Link>
+                    <Link
+                      to="/affiliate"
+                      className="block px-6 py-4 text-sm font-medium tracking-wider text-slate-300 hover:text-[#E9C349] hover:bg-white/5 transition-all uppercase"
+                    >
+                      {translations[lang as keyof typeof translations]
+                        .navAffiliate || "Affiliate Program"}
                     </Link>
                   </div>
                 </div>
@@ -505,6 +513,14 @@ function AppContent() {
                         {translations[lang as keyof typeof translations]
                           .footerPortfolio || "Portfolio"}
                       </Link>
+                      <Link
+                        to="/affiliate"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="text-sm font-semibold tracking-wider uppercase text-[#E9C349] hover:text-yellow-300 transition-colors"
+                      >
+                        {translations[lang as keyof typeof translations]
+                          .navAffiliate || "Affiliate Program"}
+                      </Link>
                     </motion.div>
                   )}
                 </div>
@@ -593,6 +609,18 @@ function AppContent() {
                       exit={{ opacity: 0 }}
                     >
                       <ServicesPage lang={lang} />
+                    </motion.div>
+                  }
+                />
+                <Route
+                  path="/affiliate"
+                  element={
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                    >
+                      <Affiliate lang={lang} />
                     </motion.div>
                   }
                 />
@@ -1906,7 +1934,7 @@ function AppContent() {
                   </li>
                   <li>
                     <Link
-                      to="/pricing#affiliate"
+                      to="/affiliate"
                       className="text-slate-400 hover:text-white text-sm transition-colors"
                     >
                       {lang === "IT"

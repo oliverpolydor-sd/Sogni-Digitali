@@ -43,6 +43,9 @@ html.light-mode .text-slate-500,
 html.light-mode .placeholder\:text-slate-500::placeholder {
   color: #7c2d12 !important;
 }
+html.light-mode .bg-black\/40,
+html.light-mode .bg-black\/50,
+html.light-mode .bg-black\/60,
 html.light-mode .bg-black\/80,
 html.light-mode .bg-black\/90,
 html.light-mode .bg-black\/95 {

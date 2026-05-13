@@ -12,7 +12,7 @@ export default function Analytics() {
   const location = useLocation();
 
   useEffect(() => {
-    const gaMeasurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
+    const gaMeasurementId = import.meta.env.VITE_GA_MEASUREMENT_ID || 'G-92SZE7Z7CS';
     
     if (!gaMeasurementId) return;
 

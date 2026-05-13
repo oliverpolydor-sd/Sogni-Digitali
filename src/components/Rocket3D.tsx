@@ -1,7 +1,21 @@
 import React, { useRef } from 'react';
+import { useInView } from 'motion/react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float } from '@react-three/drei';
 import * as THREE from 'three';
+
+class ErrorBoundary extends React.Component<{children: React.ReactNode}, {hasError: boolean}> {
+  constructor(props: {children: React.ReactNode}) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() { return { hasError: true }; }
+  componentDidCatch(error: any) { console.error("WebGL Error in Rocket3D:", error); }
+  render() {
+    if (this.state.hasError) return null;
+    return this.props.children;
+  }
+}
 
 function RocketModel() {
   const groupRef = useRef<THREE.Group>(null);
@@ -184,15 +198,22 @@ function RocketModel() {
 }
 
 export default function Rocket3D() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { margin: "200px" });
+
   return (
-    <div className="absolute inset-0 z-0 pointer-events-none opacity-60 mix-blend-screen">
-      <Canvas camera={{ position: [0, 0, 14], fov: 45 }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 5]} intensity={1.5} color="#ffffff" />
-        <directionalLight position={[-10, -10, -5]} intensity={1.2} color="#00E5FF" />
-        <directionalLight position={[0, -10, 5]} intensity={2.5} color="#E9C349" />
-        <RocketModel />
-      </Canvas>
+    <div ref={containerRef} className="absolute inset-0 z-0 pointer-events-none opacity-60 mix-blend-screen bg-black/5" style={{ minHeight: "200px" }}>
+      {isInView && (
+        <ErrorBoundary>
+          <Canvas camera={{ position: [0, 0, 14], fov: 45 }} gl={{ powerPreference: "default", preserveDrawingBuffer: false }}>
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[10, 10, 5]} intensity={1.5} color="#ffffff" />
+            <directionalLight position={[-10, -10, -5]} intensity={1.2} color="#00E5FF" />
+            <directionalLight position={[0, -10, 5]} intensity={2.5} color="#E9C349" />
+            <RocketModel />
+          </Canvas>
+        </ErrorBoundary>
+      )}
     </div>
   );
 }
