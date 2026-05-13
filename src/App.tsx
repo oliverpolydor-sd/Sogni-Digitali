@@ -53,22 +53,21 @@ import SunBackground from "./components/SunBackground";
 import LoadingScreen from "./components/LoadingScreen";
 import ScrambleNumber from "./components/ScrambleNumber";
 
-// Lazy loaded pages to improve performance
-const Pricing = React.lazy(() => import("./pages/Pricing"));
-const Checkout = React.lazy(() => import("./pages/Checkout"));
-const Terms = React.lazy(() => import("./pages/Terms"));
-const Privacy = React.lazy(() => import("./pages/Privacy"));
-const Legal = React.lazy(() => import("./pages/Legal"));
-const Linktree = React.lazy(() => import("./pages/Linktree"));
-const MarketingPage = React.lazy(() => import("./pages/Marketing"));
-const PackagesPage = React.lazy(() => import("./pages/Packages"));
-const PortfolioPage = React.lazy(() => import("./pages/Portfolio"));
-const LuminaDetail = React.lazy(() => import("./pages/LuminaDetail"));
-const NexusDetail = React.lazy(() => import("./pages/NexusDetail"));
-const ServicesPage = React.lazy(() => import("./pages/Services"));
-const BookingPage = React.lazy(() => import("./pages/Booking"));
-const Affiliate = React.lazy(() => import("./pages/Affiliate"));
-const NotFound = React.lazy(() => import("./pages/NotFound"));
+import Pricing from "./pages/Pricing";
+import Checkout from "./pages/Checkout";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import Legal from "./pages/Legal";
+import Linktree from "./pages/Linktree";
+import MarketingPage from "./pages/Marketing";
+import PackagesPage from "./pages/Packages";
+import PortfolioPage from "./pages/Portfolio";
+import LuminaDetail from "./pages/LuminaDetail";
+import NexusDetail from "./pages/NexusDetail";
+import ServicesPage from "./pages/Services";
+import BookingPage from "./pages/Booking";
+import Affiliate from "./pages/Affiliate";
+import NotFound from "./pages/NotFound";
 
 // Lazy loaded heavy 3D components
 const Dodo3D = React.lazy(() => import("./components/Dodo3D"));
@@ -2085,9 +2084,7 @@ function AppContent() {
 export default function App() {
   return (
     <AccessibilityProvider>
-      <Router>
-        <AppContent />
-      </Router>
+      <AppContent />
     </AccessibilityProvider>
   );
 }
