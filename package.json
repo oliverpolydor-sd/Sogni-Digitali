@@ -10,9 +10,10 @@
     "build:client": "vite build --outDir dist/client",
     "build:server": "vite build --ssr src/entry-server.tsx --outDir dist/server",
     "prerender": "tsx prerender.ts",
-    "preview": "vite preview",
+    "preview": "npm run build:client && wrangler dev",
     "clean": "rm -rf dist",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "deploy": "npm run build:client && wrangler deploy"
   },
   "dependencies": {
     "@google/genai": "^1.29.0",
@@ -44,11 +45,13 @@
     "vite": "^6.2.0"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.36.4",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/express-rate-limit": "^5.1.3",
     "@types/node": "^22.14.0",
     "@vercel/node": "^5.8.0",
-    "autoprefixer": "^10.4.21"
+    "autoprefixer": "^10.4.21",
+    "wrangler": "^4.90.1"
   }
 }
